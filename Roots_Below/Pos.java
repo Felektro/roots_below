@@ -25,4 +25,17 @@ public class Pos extends Actor
     {
         // Add your action code here.
     }
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(!(o instanceof Pos)) return false;
+        Pos p = (Pos)o;
+        return x == p.x && y == p.y;
+    }
+
+    @Override
+    public int hashCode(){
+        return x * 31 + y;
+    }
+    
 }
