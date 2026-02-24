@@ -27,7 +27,7 @@ public class GameManager extends Actor
         
         
         //gridRooms(5);
-        generateRooms(17);
+        generateRooms(15);
         
         currentPos = new Pos(0, 0);
         
@@ -38,6 +38,7 @@ public class GameManager extends Actor
         //need to load this once on startup for the doors in the starter room to display properly
         //rooms.get(currentPos).loadRoom();
     }
+    
     
     public void changeRoom(Door.DoorType type, Actor player){
         int offset = 100;
@@ -87,6 +88,9 @@ public class GameManager extends Actor
                 rooms.get(currPos).botDoor = (j != grid-1);
                 rooms.get(currPos).rightDoor = (i != grid-1);
                 rooms.get(currPos).leftDoor = (i != 0);
+                
+                rooms.get(currPos).isShop = (i == 1 && j == 1);
+                rooms.get(currPos).isGarden = (i == 3 && j == 3);
             }
         }
     }
@@ -138,6 +142,26 @@ public class GameManager extends Actor
             }
         }
         
+        boolean shopGenerated = false;
+        boolean gardenGenerated = false;
+        
+        ArrayList<Pos> keys = new ArrayList<>(rooms.keySet());
+        
+        while (!shopGenerated){
+            Pos shop = keys.get(Greenfoot.getRandomNumber(keys.size()));
+            if(!shop.equals(new Pos(0, 0))){
+                rooms.get(shop).isShop = true;
+                shopGenerated = true;
+            }
+        }
+        while (!gardenGenerated){
+            Pos garden = keys.get(Greenfoot.getRandomNumber(keys.size()));
+            if(!garden.equals(new Pos(0, 0)) && !rooms.get(garden).isShop){
+                rooms.get(garden).isGarden = true;
+                gardenGenerated = true;
+            }
+        }
+   
         
     }
     

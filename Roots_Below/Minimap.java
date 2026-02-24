@@ -46,10 +46,13 @@ public class Minimap extends Actor
         setImage(image);
     }
     
-    public void drawRoom(int x, int y){
+    public void drawRoom(int x, int y, Room room){
         GreenfootImage roomImg = new GreenfootImage(roomD, roomD);
         
-        if(x == 0 && y == 0){roomImg.setColor(Color.GREEN);}
+        
+        if(room.isShop) {roomImg.setColor(Color.BLUE);}
+        else if(room.isGarden) {roomImg.setColor(Color.GREEN);}
+        else if(x == 0 && y == 0){roomImg.setColor(Color.GRAY);}
         else {roomImg.setColor(Color.BLACK);}
         
         
@@ -84,7 +87,7 @@ public class Minimap extends Actor
         
         for (Pos pos : rooms.keySet()) {
             //System.out.println("x: " + (pos.x - offsetX) + " y: " + (pos.y - offsetY));
-            drawRoom(pos.x - offsetX, pos.y - offsetY);
+            drawRoom(pos.x - offsetX, pos.y - offsetY, rooms.get(new Pos(pos.x, pos.y)));
             
             if(rooms.get(pos).topDoor == true){
                 drawCorridor(pos.x - offsetX, pos.y - offsetY-1, pos.x - offsetX, pos.y - offsetY);

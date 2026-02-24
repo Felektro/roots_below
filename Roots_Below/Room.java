@@ -14,6 +14,8 @@ public class Room extends Actor
     
     public boolean topDoor, botDoor, rightDoor, leftDoor;
     
+    public boolean isShop, isGarden;
+    
     private List<Door> doors;
     
     public Room(int x, int y){
