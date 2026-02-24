@@ -25,13 +25,23 @@ public class MyWorld extends World
      */
     private void prepare()
     {
-        Door door = new Door(Door.DoorType.LEFT);
+        Minimap minimap = new Minimap();
+        addObject(minimap,1400,200);
+        
+        GameManager gm = new GameManager(minimap);
+        addObject(gm, 0, 0);
+        
+        Door door = new Door(Door.DoorType.LEFT, gm);
         addObject(door,50,450);
-        Door door2 = new Door(Door.DoorType.UP);
+        Door door2 = new Door(Door.DoorType.UP, gm);
         addObject(door2,800,100);
-        Door door3 = new Door(Door.DoorType.RIGHT);
+        Door door3 = new Door(Door.DoorType.RIGHT, gm);
         addObject(door3,1550,450);
-        Door door4 = new Door(Door.DoorType.DOWN);
+        Door door4 = new Door(Door.DoorType.DOWN, gm);
         addObject(door4,800,800);
+        
+        Player player = new Player();
+        addObject(player, 800, 450);
+        
     }
 }

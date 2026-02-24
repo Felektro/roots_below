@@ -2,6 +2,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.HashMap;
 import java.util.ArrayList;
 
+
 /**
  * Write a description of class GameManager here.
  * 
@@ -13,22 +14,81 @@ public class GameManager extends Actor
     
     HashMap<Pos, Room> rooms = new HashMap<>();
     
-    public GameManager(){
+    Minimap minimap;
+    
+    Pos currentPos;
+    
+    public GameManager(Minimap mnmp){
+        GreenfootImage image = new GreenfootImage(1, 1);
+        setImage(image);
         
-        generateRooms(10);
         
-        displayRooms();
+        minimap = mnmp;
+        
+        
+        //gridRooms(5);
+        generateRooms(17);
+        
+        currentPos = new Pos(0, 0);
+        
+        //displayRooms();
+        
+        minimap.loadRooms(rooms, currentPos.x, currentPos.y);
+        
+        //need to load this once on startup for the doors in the starter room to display properly
+        //rooms.get(currentPos).loadRoom();
     }
     
-    public void GridRooms(int grid){
-        for (int i = 0; i < grid; i++){
-            for (int j = 0; j < grid; j++){
-                Pos start = new Pos(i, j);
-                rooms.put(start, new Room(i, j));
-                //System.out.println(i + " "+ j);
-            }
+    public void changeRoom(Door.DoorType type, Actor player){
+        int offset = 100;
+        
+        switch(type) {
+            case Door.DoorType.UP:
+                if(rooms.get(currentPos).topDoor){
+                    player.setLocation(800,800 - offset);
+                    currentPos = new Pos(currentPos.x, currentPos.y - 1);
+                }
+                break;
+            case Door.DoorType.DOWN:
+                if(rooms.get(currentPos).botDoor){
+                    player.setLocation(800,100 + offset);
+                    currentPos = new Pos(currentPos.x, currentPos.y + 1);
+                }
+                break;
+            case Door.DoorType.RIGHT:
+                if(rooms.get(currentPos).rightDoor){
+                    player.setLocation(50 + offset,450);
+                    currentPos = new Pos(currentPos.x + 1, currentPos.y);
+                }
+                break;
+            case Door.DoorType.LEFT:
+                if(rooms.get(currentPos).leftDoor){
+                    player.setLocation(1550 - offset,450);
+                    currentPos = new Pos(currentPos.x - 1, currentPos.y);
+                }
+                break;
+                
         }
         
+        minimap.loadRooms(rooms, currentPos.x, currentPos.y);
+        //System.out.println(currentPos.x + " " +currentPos.y);
+        
+        rooms.get(currentPos).loadRoom();
+    }
+    
+    public void gridRooms(int grid){
+        int offset = (int)Math.floor(grid/2f);
+        
+        for (int i = 0; i < grid; i++){
+            for (int j = 0; j < grid; j++){
+                Pos currPos = new Pos(i - offset, j - offset);
+                rooms.put(currPos, new Room(i - offset, j - offset));
+                rooms.get(currPos).topDoor = (j != 0);
+                rooms.get(currPos).botDoor = (j != grid-1);
+                rooms.get(currPos).rightDoor = (i != grid-1);
+                rooms.get(currPos).leftDoor = (i != 0);
+            }
+        }
     }
     
     public void generateRooms(int roomNum){
@@ -51,16 +111,34 @@ public class GameManager extends Actor
             
             Pos newPos = new Pos(nx, ny);
             
-            System.out.println("Trying to make a room at x: " +nx+ " y: "+ny);
+            //System.out.println("Trying to make a room at x: " +nx+ " y: "+ny);
             
             if(!rooms.containsKey(newPos)){
-                System.out.println("Making a room at x: " +nx+ " y: "+ny);
-                
+                //System.out.println("Making a room at x: " +nx+ " y: "+ny);
                 rooms.put(newPos, new Room(nx, ny));
+                
+                if(dir == 0){
+                    rooms.get(new Pos(base.x, base.y)).topDoor = true;
+                    rooms.get(newPos).botDoor = true;
+                }
+                if(dir == 1){
+                    rooms.get(new Pos(base.x, base.y)).rightDoor = true;
+                    rooms.get(newPos).leftDoor = true;
+                }
+                if(dir == 2){
+                    rooms.get(new Pos(base.x, base.y)).botDoor = true;
+                    rooms.get(newPos).topDoor = true;
+                }
+                if(dir == 3){
+                    rooms.get(new Pos(base.x, base.y)).leftDoor = true;
+                    rooms.get(newPos).rightDoor = true;
+                }
             }else{
-                System.out.println("There is already a room at x: " +nx+ " y: "+ny);
+                //System.out.println("There is already a room at x: " +nx+ " y: "+ny);
             }
         }
+        
+        
     }
     
     public void displayRooms(){
