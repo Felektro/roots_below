@@ -40,7 +40,10 @@ public class MyWorld extends World
         Door door4 = new Door(Door.DoorType.DOWN, gm);
         addObject(door4,800,800);
         
-        Player player = new Player();
+        HoeWeapon hoe = new HoeWeapon();
+        addObject(hoe, 800, 450);
+        
+        Player player = new Player(hoe);
         addObject(player, 800, 450);
         
     }

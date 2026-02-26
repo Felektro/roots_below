@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,10 +19,11 @@ public class Room extends Actor
     
     private List<Door> doors;
     
+    private ArrayList<Enemy> enemies;
     public Room(int x, int y){
         this.x = x;
         this.y = y;
-        
+        enemies = RoomLayout.randomRoomLayout();
     }
     public void act()
     {
@@ -29,7 +31,7 @@ public class Room extends Actor
     }
     
     public void loadRoom(){
-        
+        loadEnemies();
         loadDoors();
     }
     
@@ -43,6 +45,21 @@ public class Room extends Actor
         bg.setColor(Color.BLACK);
         bg.drawString("This is room x: " + x + " y: " + y, world.getWidth()/2, world.getHeight()/2);
         world.setBackground(bg);
+    }
+    
+    public void loadEnemies(){
+        ArrayList<Enemy> enemies = RoomLayout.randomRoomLayout();
+        for(int i = 0; i < enemies.size(); i++){
+            greenfoot.core.WorldHandler.getInstance().getWorld().addObject(enemies.get(i), enemies.get(i).x, enemies.get(i).y);
+        }
+    }
+    
+    public void removeOldEnemies(){
+        //if(enemies == null){return;}   DOESNT REMOVE JACK SHIT, NEED TO FIX IT
+        for (Enemy enemy : enemies){
+            System.out.println("new enemy removed" + enemy);
+            greenfoot.core.WorldHandler.getInstance().getWorld().removeObject(enemy);
+        }
     }
     
     public void loadDoors(){

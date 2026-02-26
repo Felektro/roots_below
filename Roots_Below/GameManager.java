@@ -17,6 +17,8 @@ public class GameManager extends Actor
     Minimap minimap;
     
     Pos currentPos;
+    Pos shopPos;
+    Pos gardenPos;
     
     public GameManager(Minimap mnmp){
         GreenfootImage image = new GreenfootImage(1, 1);
@@ -42,6 +44,8 @@ public class GameManager extends Actor
     
     public void changeRoom(Door.DoorType type, Actor player){
         int offset = 100;
+        
+        rooms.get(currentPos).removeOldEnemies();
         
         switch(type) {
             case Door.DoorType.UP:
@@ -77,6 +81,10 @@ public class GameManager extends Actor
         rooms.get(currentPos).loadRoom();
     }
     
+    public double distRooms(int x1, int y1, int x2, int y2){
+        return Math.sqrt((Math.pow(x1 - x2, 2)+Math.pow(y1 - y2, 2)));
+    }
+    
     public void gridRooms(int grid){
         int offset = (int)Math.floor(grid/2f);
         
@@ -96,9 +104,9 @@ public class GameManager extends Actor
     }
     
     public void generateRooms(int roomNum){
-        Pos start = new Pos(0, 0);
-        rooms.put(start, new Room(0, 0));
         
+        setUpBasicRooms();
+                
         while(rooms.size() < roomNum){
             ArrayList<Pos> keys = new ArrayList<>(rooms.keySet());
             Pos base = keys.get(Greenfoot.getRandomNumber(keys.size()));
@@ -145,23 +153,54 @@ public class GameManager extends Actor
         boolean shopGenerated = false;
         boolean gardenGenerated = false;
         
+        int shopDist = 2;
+        int gardenDist = 3;
+        
         ArrayList<Pos> keys = new ArrayList<>(rooms.keySet());
         
         while (!shopGenerated){
             Pos shop = keys.get(Greenfoot.getRandomNumber(keys.size()));
-            if(!shop.equals(new Pos(0, 0))){
+            if(!shop.equals(new Pos(0, 0)) && distRooms(0, 0, shop.x, shop.y) >= shopDist){
                 rooms.get(shop).isShop = true;
                 shopGenerated = true;
+                shopPos = shop;
             }
         }
         while (!gardenGenerated){
             Pos garden = keys.get(Greenfoot.getRandomNumber(keys.size()));
-            if(!garden.equals(new Pos(0, 0)) && !rooms.get(garden).isShop){
+            if(!garden.equals(new Pos(0, 0)) && !rooms.get(garden).isShop && distRooms(garden.x, garden.y, shopPos.x, shopPos.y) >= shopDist){
                 rooms.get(garden).isGarden = true;
                 gardenGenerated = true;
             }
         }
    
+        
+    }
+    
+    public void setUpBasicRooms(){
+        Pos start = new Pos(0, 0);
+        rooms.put(start, new Room(0, 0));
+        
+        rooms.get(start).topDoor = true;
+        rooms.get(start).botDoor = true;
+        rooms.get(start).rightDoor = true;
+        rooms.get(start).leftDoor = true;
+        
+        Pos top = new Pos(0, -1);
+        rooms.put(top, new Room(0, -1));
+        rooms.get(top).botDoor = true;
+        
+        Pos bot = new Pos(0, 1);
+        rooms.put(bot, new Room(0, 1));
+        rooms.get(bot).topDoor = true;
+        
+        Pos right = new Pos(1, 0);
+        rooms.put(right, new Room(1, 0));
+        rooms.get(right).leftDoor = true;
+        
+        Pos left = new Pos(-1, 0);
+        rooms.put(left, new Room(-1, 0));
+        rooms.get(left).rightDoor = true;
         
     }
     
