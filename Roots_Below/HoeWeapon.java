@@ -15,6 +15,8 @@ public class HoeWeapon extends Actor
     
     private GreenfootImage image;
     
+    public int damage = 10;
+    
     public HoeWeapon(){
         image = new GreenfootImage(250, 30);
         image.setColor(Color.BLUE);
@@ -24,6 +26,11 @@ public class HoeWeapon extends Actor
     
     public void act()
     {
-        //turn(25);
+        Enemy enemy = (Enemy)getOneIntersectingObject(Enemy.class);
+        
+        if(enemy != null){
+            //System.out.println("hit an enemy");
+            enemy.takeDmg(damage);
+        }
     }
 }

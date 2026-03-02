@@ -45,7 +45,16 @@ public class GameManager extends Actor
     public void changeRoom(Door.DoorType type, Actor player){
         int offset = 100;
         
-        rooms.get(currentPos).removeOldEnemies();
+        rooms.get(currentPos).checkEnemies();
+        
+        if(!rooms.get(currentPos).isCleared){
+            return;
+        }
+        
+        if(!currentPos.equals(new Pos(0, 0))){
+            //System.out.println(currentPos.x + " " + currentPos.y);
+            //rooms.get(currentPos).removeOldEnemies();
+        }
         
         switch(type) {
             case Door.DoorType.UP:
@@ -185,6 +194,7 @@ public class GameManager extends Actor
         rooms.get(start).botDoor = true;
         rooms.get(start).rightDoor = true;
         rooms.get(start).leftDoor = true;
+        rooms.get(start).isCleared = true;
         
         Pos top = new Pos(0, -1);
         rooms.put(top, new Room(0, -1));
