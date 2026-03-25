@@ -13,15 +13,10 @@ public class HoeWeapon extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     
-    private GreenfootImage image;
-    
     public int damage = 10;
     
     public HoeWeapon(){
-        image = new GreenfootImage(250, 30);
-        image.setColor(Color.BLUE);
-        image.fillRect(125, 0, 125, 30);
-        setImage(image);
+        setImg("hoe1.png");
     }
     
     public void act()
@@ -32,5 +27,13 @@ public class HoeWeapon extends Actor
             //System.out.println("hit an enemy");
             enemy.takeDmg(damage);
         }
+    }
+    
+    public void setImg(String img){
+        GreenfootImage image = new GreenfootImage(img);
+        
+        image.scale((int)(image.getWidth()*5), (int)(image.getHeight()*5));
+        
+        setImage(image);
     }
 }

@@ -13,6 +13,8 @@ public class Player extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     
+    public GameManager gm;
+    
     public int playerSpeed = 5;
     public HoeWeapon hoeWeapon;
     
@@ -20,48 +22,86 @@ public class Player extends Actor
     boolean usingHoe;
     int lastSwing = 1;
     int coneAngle = 120;
+    int turnAngle = 7;
+    
+    int hoeOffsetX = 0;
+    int hoeOffsetY = 20;
     
     float swingDelay = 0.3f;
     double timeLastSwing;
     
-    int wallWidth = 13 * 10; // 16 pixels
-    public Player(HoeWeapon hoe){
+    float animDelay = 0.1f;
+    double timeLastFrame;
+    int currentFrame = 0;
+    
+    int wallWidth = 15 * 10; // 15 pixels
+    int wallOffset = 10;
+    
+    GreenfootImage[] playerRight = new GreenfootImage[8];
+    GreenfootImage[] playerLeft = new GreenfootImage[8];
+    GreenfootImage[] playerUp = new GreenfootImage[8];
+    GreenfootImage[] playerDown = new GreenfootImage[8];
+    
+    
+    public Player(HoeWeapon hoe, GameManager gm){
         hoeWeapon = hoe;
-        hoeWeapon.turn(coneAngle/2);
+        this.gm = gm;
+        
+        hoeWeapon.turn(90 + coneAngle/2);
+        
+        setImage(scaleImage("player_front.png"));
+        setAnimImages();
     }
     
     public void act()
     {
         movement();
+        roomTransition();
         hoeUse();
+        
+        //System.out.println(getX() + "  " + getY());
     }
     
     public void movement(){
         if (Greenfoot.isKeyDown("a")) {
             setLocation(getX() - playerSpeed, getY());
+            animate(playerLeft);
+            getWorld().setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
+            hoeOffsetX = -25;
+            wallOffset = -10;
             if(checkWall()) {setLocation(getX() + playerSpeed, getY());}
             if(!usingHoe) {hoeWeapon.setRotation(180 + coneAngle/2*lastSwing);}
         }
         if (Greenfoot.isKeyDown("d")) {
             setLocation(getX() + playerSpeed, getY());
+            animate(playerRight);
+            getWorld().setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
+            hoeOffsetX = 25;
+            wallOffset = 10;
             if(checkWall()) {setLocation(getX() - playerSpeed, getY());}
             if(!usingHoe) {hoeWeapon.setRotation(0 + coneAngle/2*lastSwing);}
         }
         if (Greenfoot.isKeyDown("w")) {
             setLocation(getX(), getY() - playerSpeed);
+            animate(playerUp);
+            getWorld().setPaintOrder(Minimap.class, Player.class, HoeWeapon.class, Door.class);
+            hoeOffsetX = 0;
             if(checkWall()) {setLocation(getX(), getY() + playerSpeed);}
             if(!usingHoe) {hoeWeapon.setRotation(270 + coneAngle/2*lastSwing);}
         }
         if (Greenfoot.isKeyDown("s")) {
             setLocation(getX(), getY() + playerSpeed);
+            animate(playerDown);
+            getWorld().setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
+            hoeOffsetX = 0;
             if(checkWall()) {setLocation(getX(), getY() - playerSpeed);}
             if(!usingHoe) {hoeWeapon.setRotation(90 + coneAngle/2*lastSwing);}
         }
     }
     
     public void hoeUse(){
-        hoeWeapon.setLocation(getX(), getY());
-        int turnAngle = 5;
+        hoeWeapon.setLocation(getX() + hoeOffsetX, getY() + hoeOffsetY);
+        
         if (Greenfoot.isKeyDown("space") && !usingHoe && (System.currentTimeMillis() - timeLastSwing)/1000.0 > swingDelay) {
             usingHoe = true;
             hoeTurn = coneAngle;
@@ -73,13 +113,77 @@ public class Player extends Actor
                 usingHoe = false;
                 lastSwing *= -1;
                 timeLastSwing = System.currentTimeMillis();
+                if(lastSwing == -1){ hoeWeapon.setImg("hoe2.png"); }
+                else { hoeWeapon.setImg("hoe1.png"); }
             }
         }
     }
     
-    public boolean checkWall(){
+    public void roomTransition(){
+        Door.DoorType transition = Door.DoorType.UP;
+        boolean switchRooms = false;
+        
         int x = getX();
         int y = getY();
+        
+        if((775 <= x && x <= 825) && y == 95){
+            transition = Door.DoorType.UP;
+            switchRooms = true;
+        }
+        if((775 <= x && x <= 825) && y == 685){
+            transition = Door.DoorType.DOWN;
+            switchRooms = true;
+        }
+        if(x == 1435 && (375 <= y && y <= 425)){
+            transition = Door.DoorType.RIGHT;
+            switchRooms = true;
+        }
+        if(x == 165 && (375 <= y && y <= 425)){
+            transition = Door.DoorType.LEFT;
+            switchRooms = true;
+        }
+        //System.out.println(switchRooms);
+        if(switchRooms){gm.changeRoom(transition, this); switchRooms = false;}
+    }
+    
+    public void animate(GreenfootImage[] anim){
+        setImage(anim[currentFrame]);
+        if((System.currentTimeMillis() - timeLastFrame)/1000.0 > animDelay){
+            currentFrame++;
+            if(currentFrame == 8){currentFrame = 0;}
+            timeLastFrame = System.currentTimeMillis();
+        }
+    }
+    
+    public void setAnimImages(){
+        for (int i = 0; i < 8; i++){
+            playerRight[i] = scaleImage("player_right_" + (i+1) + ".png");
+        }
+        
+        for (int i = 0; i < 8; i++){
+            playerLeft[i] = scaleImage("player_right_" + (i+1) + ".png");
+            playerLeft[i].mirrorHorizontally();
+        }
+        for (int i = 0; i < 8; i++){
+            playerDown[i] = scaleImage("player_front_" + (i+1) + ".png");
+        }
+        for (int i = 0; i < 8; i++){
+            playerUp[i] = scaleImage("player_back_" + (i+1) + ".png");
+        }
+    }
+    
+    public GreenfootImage scaleImage(String img){
+        GreenfootImage image = new GreenfootImage(img);
+        
+        image.scale((int)(image.getWidth()*5), (int)(image.getHeight()*5)); 
+        
+        return image;
+         
+    }
+    
+    public boolean checkWall(){
+        int x = getX() + wallOffset;
+        int y = getY() + 60;
         
         return !((wallWidth < x && x < 1600 - wallWidth) && (wallWidth < y && y < 900 - wallWidth));
     }

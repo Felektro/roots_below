@@ -4,94 +4,51 @@ class.Wall.image=empty.png
 dependency1.from=MyWorld
 dependency1.to=Minimap
 dependency1.type=UsesDependency
-dependency10.from=GameManager
-<<<<<<< Updated upstream
-dependency10.to=Minimap
-=======
-<<<<<<< Updated upstream
+dependency10.from=Player
 dependency10.to=Door
->>>>>>> Stashed changes
 dependency10.type=UsesDependency
-dependency11.from=GameManager
-dependency11.to=Door
-dependency11.type=UsesDependency
-dependency12.from=Enemy
-dependency12.to=Player
-dependency12.type=UsesDependency
-dependency13.from=Minimap
-dependency13.to=Room
-dependency13.type=UsesDependency
-dependency14.from=Minimap
-dependency14.to=Pos
-dependency14.type=UsesDependency
-dependency15.from=Room
-dependency15.to=Door
-dependency15.type=UsesDependency
-dependency16.from=Room
-dependency16.to=Enemy
-dependency16.type=UsesDependency
-dependency17.from=Room
-dependency17.to=RoomLayout
-dependency17.type=UsesDependency
-dependency18.from=Door
-dependency18.to=GameManager
-dependency18.type=UsesDependency
-<<<<<<< Updated upstream
-dependency19.from=Door
-dependency19.to=Player
-=======
-dependency19.from=RoomLayout
-dependency19.to=Enemy
-=======
-dependency10.to=Room
-dependency10.type=UsesDependency
-dependency11.from=GameManager
-dependency11.to=Minimap
+dependency11.from=HoeWeapon
+dependency11.to=Enemy
 dependency11.type=UsesDependency
 dependency12.from=GameManager
-dependency12.to=Door
+dependency12.to=Pos
 dependency12.type=UsesDependency
-dependency13.from=Enemy
-dependency13.to=Player
+dependency13.from=GameManager
+dependency13.to=Room
 dependency13.type=UsesDependency
-dependency14.from=Minimap
-dependency14.to=Room
+dependency14.from=GameManager
+dependency14.to=Minimap
 dependency14.type=UsesDependency
-dependency15.from=Minimap
-dependency15.to=Pos
+dependency15.from=GameManager
+dependency15.to=Door
 dependency15.type=UsesDependency
-dependency16.from=Room
-dependency16.to=Door
+dependency16.from=Enemy
+dependency16.to=Player
 dependency16.type=UsesDependency
-dependency17.from=Room
-dependency17.to=Enemy
+dependency17.from=Minimap
+dependency17.to=Room
 dependency17.type=UsesDependency
-dependency18.from=Room
-dependency18.to=RoomLayout
+dependency18.from=Minimap
+dependency18.to=Pos
 dependency18.type=UsesDependency
-dependency19.from=Door
-dependency19.to=GameManager
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+dependency19.from=Room
+dependency19.to=Door
 dependency19.type=UsesDependency
 dependency2.from=MyWorld
 dependency2.to=GameManager
 dependency2.type=UsesDependency
-<<<<<<< Updated upstream
-dependency20.from=RoomLayout
+dependency20.from=Room
 dependency20.to=Enemy
 dependency20.type=UsesDependency
-=======
-<<<<<<< Updated upstream
-=======
-dependency20.from=Door
-dependency20.to=Player
-dependency20.type=UsesDependency
-dependency21.from=RoomLayout
-dependency21.to=Enemy
+dependency21.from=Room
+dependency21.to=RoomLayout
 dependency21.type=UsesDependency
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+dependency22.from=Door
+dependency22.to=GameManager
+dependency22.type=UsesDependency
+dependency23.from=RoomLayout
+dependency23.to=Enemy
+dependency23.type=UsesDependency
 dependency3.from=MyWorld
 dependency3.to=Door
 dependency3.type=UsesDependency
@@ -104,53 +61,22 @@ dependency5.type=UsesDependency
 dependency6.from=MyWorld
 dependency6.to=Wall
 dependency6.type=UsesDependency
-<<<<<<< Updated upstream
-dependency7.from=HoeWeapon
-dependency7.to=Enemy
-=======
-<<<<<<< Updated upstream
-dependency7.from=GameManager
-dependency7.to=Pos
->>>>>>> Stashed changes
-dependency7.type=UsesDependency
-dependency8.from=GameManager
-dependency8.to=Pos
-dependency8.type=UsesDependency
-dependency9.from=GameManager
-<<<<<<< Updated upstream
-dependency9.to=Room
-=======
-dependency9.to=Minimap
-=======
 dependency7.from=Player
-dependency7.to=HoeWeapon
+dependency7.to=GameManager
 dependency7.type=UsesDependency
-dependency8.from=HoeWeapon
-dependency8.to=Enemy
+dependency8.from=Player
+dependency8.to=HoeWeapon
 dependency8.type=UsesDependency
-dependency9.from=GameManager
-dependency9.to=Pos
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+dependency9.from=Player
+dependency9.to=Minimap
 dependency9.type=UsesDependency
 editor.fx.0.height=1408
 editor.fx.0.width=2576
 editor.fx.0.x=-8
 editor.fx.0.y=-8
-<<<<<<< Updated upstream
 height=1408
-package.numDependencies=20
-=======
-<<<<<<< Updated upstream
-height=1399
-package.numDependencies=19
->>>>>>> Stashed changes
-package.numTargets=10
-=======
-height=1390
-package.numDependencies=21
+package.numDependencies=23
 package.numTargets=11
->>>>>>> Stashed changes
 project.charset=UTF-8
 publish.hasSource=false
 publish.locked=true
@@ -243,18 +169,7 @@ target9.width=120
 target9.x=0
 target9.y=0
 version=3.1.0
-<<<<<<< Updated upstream
 width=2576
-=======
-<<<<<<< Updated upstream
-width=1926
->>>>>>> Stashed changes
 world.lastInstantiated=MyWorld
 xPosition=0
 yPosition=0
-=======
-width=2558
-world.lastInstantiated=MyWorld
-xPosition=1
-yPosition=1
->>>>>>> Stashed changes
