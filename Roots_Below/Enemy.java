@@ -14,16 +14,21 @@ public class Enemy extends Actor
      */
     
     GreenfootImage image;
+    
     public String type;
+    public int hp = 10;
+    
     public int x;
     public int y;
+
+    public boolean isDead;
     
     public Enemy(int x, int y){
         image = new GreenfootImage(50, 50);
         image.setColor(Color.RED);
         image.fillOval(0, 0, 50, 50);
         setImage(image);
-        
+
         this.x = x;
         this.y = y;
     }
@@ -34,6 +39,22 @@ public class Enemy extends Actor
         
         if(player != null){
             System.out.println("touching the player");
+        }
+    }
+    
+    public void remove(){
+        if(!isDead){
+            getWorld().removeObject(this);
+            
+            isDead = true;
+            
+        }
+    }
+    
+    public void takeDmg(int dmg){
+        hp -= dmg;
+        if(hp <= 0){
+            remove();
         }
     }
 }

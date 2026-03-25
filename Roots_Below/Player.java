@@ -23,6 +23,8 @@ public class Player extends Actor
     
     float swingDelay = 0.3f;
     double timeLastSwing;
+    
+    int wallWidth = 13 * 10; // 16 pixels
     public Player(HoeWeapon hoe){
         hoeWeapon = hoe;
         hoeWeapon.turn(coneAngle/2);
@@ -37,18 +39,22 @@ public class Player extends Actor
     public void movement(){
         if (Greenfoot.isKeyDown("a")) {
             setLocation(getX() - playerSpeed, getY());
+            if(checkWall()) {setLocation(getX() + playerSpeed, getY());}
             if(!usingHoe) {hoeWeapon.setRotation(180 + coneAngle/2*lastSwing);}
         }
         if (Greenfoot.isKeyDown("d")) {
             setLocation(getX() + playerSpeed, getY());
+            if(checkWall()) {setLocation(getX() - playerSpeed, getY());}
             if(!usingHoe) {hoeWeapon.setRotation(0 + coneAngle/2*lastSwing);}
         }
         if (Greenfoot.isKeyDown("w")) {
             setLocation(getX(), getY() - playerSpeed);
+            if(checkWall()) {setLocation(getX(), getY() + playerSpeed);}
             if(!usingHoe) {hoeWeapon.setRotation(270 + coneAngle/2*lastSwing);}
         }
         if (Greenfoot.isKeyDown("s")) {
             setLocation(getX(), getY() + playerSpeed);
+            if(checkWall()) {setLocation(getX(), getY() - playerSpeed);}
             if(!usingHoe) {hoeWeapon.setRotation(90 + coneAngle/2*lastSwing);}
         }
     }
@@ -69,5 +75,12 @@ public class Player extends Actor
                 timeLastSwing = System.currentTimeMillis();
             }
         }
+    }
+    
+    public boolean checkWall(){
+        int x = getX();
+        int y = getY();
+        
+        return !((wallWidth < x && x < 1600 - wallWidth) && (wallWidth < y && y < 900 - wallWidth));
     }
 }

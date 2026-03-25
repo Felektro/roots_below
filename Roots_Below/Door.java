@@ -24,17 +24,31 @@ public class Door extends Actor
     public DoorType transition;    
     
     public Door(DoorType transition, GameManager gm){
-        scaleImage();
-        
         this.transition = transition;
         this.gm = gm;
         
+        //System.out.println(transition);
+        
+        scaleImage();
         //makeVisible(false);
     }
     public void scaleImage(){
+        switch (transition){
+            case DoorType.UP:
+                image = new GreenfootImage("door_top.png");
+                break;
+            case DoorType.RIGHT:
+                image = new GreenfootImage("door_right.png");
+                break;
+            case DoorType.DOWN:
+                image = new GreenfootImage("door_bot.png");
+                break;
+            case DoorType.LEFT:
+                image = new GreenfootImage("door_left.png");
+                break;
+        }
         
-        image = getImage();
-        image.scale((int)(image.getWidth()*0.3), (int)(image.getHeight()*0.3));
+        image.scale((int)(image.getWidth()*10), (int)(image.getHeight()*10));
         
         setImage(image);
          

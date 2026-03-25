@@ -20,18 +20,20 @@ public class Minimap extends Actor
     private int scrHeight = 900;
     
     private int roomD = 25;
-    private int corrLen = 15;
+    private int corrLen = 7;
     private int corrWid = 5;
     
+    private int minimapW = scrHeight/5;
+    
     public Minimap(){
-        image = new GreenfootImage(scrHeight/3, scrHeight/3);
-        
+        image = new GreenfootImage(minimapW, minimapW);
+        image.setTransparency(200);
         resetMinimap();
     }
     
     public void resetMinimap(){
         image.setColor(Color.LIGHT_GRAY);
-        image.fillRect(0, 0, scrWidth/2, scrHeight/3);
+        image.fillRect(0, 0, minimapW, minimapW);
         
         drawContour();
     }
@@ -40,7 +42,7 @@ public class Minimap extends Actor
         image.setColor(Color.BLACK);
         
         for(int i = 0; i<5; i++){
-            image.drawRect(i, i, scrHeight/3-i*2, scrHeight/3-i*2);
+            image.drawRect(i, i, minimapW-i*2, minimapW-i*2);
         }
         
         setImage(image);
@@ -59,7 +61,7 @@ public class Minimap extends Actor
         roomImg.fillRect(0, 0, roomD, roomD);   
         
         
-        image.drawImage(roomImg , (scrHeight/6-roomD/2) + x*(roomD + corrLen), (scrHeight/6-roomD/2) + y*(roomD + corrLen));
+        image.drawImage(roomImg , (minimapW/2-roomD/2) + x*(roomD + corrLen), (minimapW/2-roomD/2) + y*(roomD + corrLen));
         
         drawContour();
     }
@@ -72,11 +74,11 @@ public class Minimap extends Actor
         if(xS != xE){
             //horizontal
             corrImg.fillRect(0, 0, corrLen, corrWid);
-            image.drawImage(corrImg , (scrHeight/6)+roomD-(int)(roomD/2) + xS*(roomD + corrLen), (scrHeight/6)-(int)(corrWid/2) + yS*(roomD + corrLen));
+            image.drawImage(corrImg , (minimapW/2)+roomD-(int)(roomD/2) + xS*(roomD + corrLen), (minimapW/2)-(int)(corrWid/2) + yS*(roomD + corrLen));
         } else{
             //vertical
             corrImg.fillRect(0, 0, corrWid, corrLen);
-            image.drawImage(corrImg , (scrHeight/6)-(int)(corrWid/2) + xS*(roomD + corrLen), (scrHeight/6)+roomD-(int)(roomD/2) + yS*(roomD + corrLen));
+            image.drawImage(corrImg , (minimapW/2)-(int)(corrWid/2) + xS*(roomD + corrLen), (minimapW/2)+roomD-(int)(roomD/2) + yS*(roomD + corrLen));
         }
         
         drawContour();

@@ -25,26 +25,31 @@ public class MyWorld extends World
      */
     private void prepare()
     {
+        setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
+        
         Minimap minimap = new Minimap();
-        addObject(minimap,1400,200);
+        addObject(minimap,1500,100);
         
         GameManager gm = new GameManager(minimap);
         addObject(gm, 0, 0);
         
         Door door = new Door(Door.DoorType.LEFT, gm);
-        addObject(door,50,450);
+        addObject(door,70,450);
         Door door2 = new Door(Door.DoorType.UP, gm);
-        addObject(door2,800,100);
+        addObject(door2,800,70);
         Door door3 = new Door(Door.DoorType.RIGHT, gm);
-        addObject(door3,1550,450);
+        addObject(door3,1530,450);
         Door door4 = new Door(Door.DoorType.DOWN, gm);
-        addObject(door4,800,800);
+        addObject(door4,800,830);
         
         HoeWeapon hoe = new HoeWeapon();
         addObject(hoe, 800, 450);
         
         Player player = new Player(hoe);
         addObject(player, 800, 450);
+        
+        Wall wall1 = new Wall();
+        addObject(wall1, 800, 450);
         
     }
 }

@@ -17,13 +17,18 @@ public class Room extends Actor
     
     public boolean isShop, isGarden;
     
+    public boolean isCleared;
+    
     private List<Door> doors;
     
     private ArrayList<Enemy> enemies;
     public Room(int x, int y){
         this.x = x;
         this.y = y;
-        enemies = RoomLayout.randomRoomLayout();
+        if(!(x == 0 && y == 0)){
+            enemies = RoomLayout.randomRoomLayout();
+        }
+        
     }
     public void act()
     {
@@ -48,17 +53,29 @@ public class Room extends Actor
     }
     
     public void loadEnemies(){
-        ArrayList<Enemy> enemies = RoomLayout.randomRoomLayout();
+        if(enemies == null){return;}
         for(int i = 0; i < enemies.size(); i++){
-            greenfoot.core.WorldHandler.getInstance().getWorld().addObject(enemies.get(i), enemies.get(i).x, enemies.get(i).y);
+            if(!enemies.get(i).isDead){
+                greenfoot.core.WorldHandler.getInstance().getWorld().addObject(enemies.get(i), enemies.get(i).x, enemies.get(i).y);
+            }            
         }
     }
     
+    public void checkEnemies(){
+        if(enemies == null){return;}
+        for(int i = 0; i < enemies.size(); i++){
+            if(!enemies.get(i).isDead){
+                return;
+            }            
+        }
+        isCleared = true;
+    }
+    
     public void removeOldEnemies(){
-        //if(enemies == null){return;}   DOESNT REMOVE JACK SHIT, NEED TO FIX IT
+        if(enemies == null){return;}
         for (Enemy enemy : enemies){
-            System.out.println("new enemy removed" + enemy);
-            greenfoot.core.WorldHandler.getInstance().getWorld().removeObject(enemy);
+            //System.out.println("new enemy removed" + enemy);
+            enemy.remove();
         }
     }
     
