@@ -55,12 +55,14 @@ public class Door extends Actor
     }
     public void act()
     {
+        /*
         Actor player = this.getOneIntersectingObject(Player.class);
         
         if(player != null){
             //System.out.println("touched the door " + transition);
             gm.changeRoom(transition, player);
         }
+        */
     }
     
     public void makeVisible(boolean bool){

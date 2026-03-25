@@ -38,6 +38,7 @@ public class Room extends Actor
     public void loadRoom(){
         loadEnemies();
         loadDoors();
+        
     }
     
     public void nameRoom(){

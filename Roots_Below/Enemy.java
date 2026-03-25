@@ -38,7 +38,7 @@ public class Enemy extends Actor
         Actor player = getOneIntersectingObject(Player.class);
         
         if(player != null){
-            System.out.println("touching the player");
+            //System.out.println("touching the player");
         }
     }
     

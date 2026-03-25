@@ -34,18 +34,18 @@ public class MyWorld extends World
         addObject(gm, 0, 0);
         
         Door door = new Door(Door.DoorType.LEFT, gm);
-        addObject(door,70,450);
+        addObject(door,80,450);
         Door door2 = new Door(Door.DoorType.UP, gm);
-        addObject(door2,800,70);
+        addObject(door2,800,80);
         Door door3 = new Door(Door.DoorType.RIGHT, gm);
-        addObject(door3,1530,450);
+        addObject(door3,1520,450);
         Door door4 = new Door(Door.DoorType.DOWN, gm);
-        addObject(door4,800,830);
+        addObject(door4,800,820);
         
         HoeWeapon hoe = new HoeWeapon();
-        addObject(hoe, 800, 450);
+        addObject(hoe, 800, 470);
         
-        Player player = new Player(hoe);
+        Player player = new Player(hoe, gm);
         addObject(player, 800, 450);
         
         Wall wall1 = new Wall();
