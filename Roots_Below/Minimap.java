@@ -54,6 +54,7 @@ public class Minimap extends Actor
         
         if(room.isShop) {roomImg.setColor(Color.BLUE);}
         else if(room.isGarden) {roomImg.setColor(Color.GREEN);}
+        else if(room.isBoss) {roomImg.setColor(Color.RED);}
         else if(x == 0 && y == 0){roomImg.setColor(Color.GRAY);}
         else {roomImg.setColor(Color.BLACK);}
         

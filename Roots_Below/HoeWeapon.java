@@ -32,7 +32,7 @@ public class HoeWeapon extends Actor
     public void setImg(String img){
         GreenfootImage image = new GreenfootImage(img);
         
-        image.scale((int)(image.getWidth()*5), (int)(image.getHeight()*5));
+        image.scale((int)(image.getWidth()*6), (int)(image.getHeight()*6));
         
         setImage(image);
     }

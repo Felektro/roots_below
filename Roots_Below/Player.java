@@ -23,6 +23,8 @@ public class Player extends Actor
     int lastSwing = 1;
     int coneAngle = 120;
     int turnAngle = 7;
+    int hoeDir = 2;
+    int hoeRot = 0;
     
     int hoeOffsetX = 0;
     int hoeOffsetY = 20;
@@ -69,8 +71,9 @@ public class Player extends Actor
             getWorld().setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = -25;
             wallOffset = -10;
+            hoeDir = 3;
             if(checkWall()) {setLocation(getX() + playerSpeed, getY());}
-            if(!usingHoe) {hoeWeapon.setRotation(180 + coneAngle/2*lastSwing);}
+            //if(!usingHoe) {hoeWeapon.setRotation(180 + coneAngle/2*lastSwing);}
         }
         if (Greenfoot.isKeyDown("d")) {
             setLocation(getX() + playerSpeed, getY());
@@ -78,45 +81,55 @@ public class Player extends Actor
             getWorld().setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = 25;
             wallOffset = 10;
+            hoeDir = 1;
             if(checkWall()) {setLocation(getX() - playerSpeed, getY());}
-            if(!usingHoe) {hoeWeapon.setRotation(0 + coneAngle/2*lastSwing);}
+            //if(!usingHoe) {hoeWeapon.setRotation(0 + coneAngle/2*lastSwing);}
         }
         if (Greenfoot.isKeyDown("w")) {
             setLocation(getX(), getY() - playerSpeed);
             animate(playerUp);
             getWorld().setPaintOrder(Minimap.class, Player.class, HoeWeapon.class, Door.class);
             hoeOffsetX = 0;
+            hoeDir = 4;
             if(checkWall()) {setLocation(getX(), getY() + playerSpeed);}
-            if(!usingHoe) {hoeWeapon.setRotation(270 + coneAngle/2*lastSwing);}
+            //if(!usingHoe) {hoeWeapon.setRotation(270 + coneAngle/2*lastSwing);}
         }
         if (Greenfoot.isKeyDown("s")) {
             setLocation(getX(), getY() + playerSpeed);
             animate(playerDown);
             getWorld().setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
-            hoeOffsetX = 0;
+            hoeOffsetX = 2;
+            hoeDir = 2;
             if(checkWall()) {setLocation(getX(), getY() - playerSpeed);}
-            if(!usingHoe) {hoeWeapon.setRotation(90 + coneAngle/2*lastSwing);}
+            //if(!usingHoe) {hoeWeapon.setRotation(90 + coneAngle/2*lastSwing);}
         }
     }
     
     public void hoeUse(){
         hoeWeapon.setLocation(getX() + hoeOffsetX, getY() + hoeOffsetY);
+        hoeWeapon.setRotation((hoeDir-1)*90 + coneAngle/2*lastSwing + hoeRot);
         
         if (Greenfoot.isKeyDown("space") && !usingHoe && (System.currentTimeMillis() - timeLastSwing)/1000.0 > swingDelay) {
             usingHoe = true;
             hoeTurn = coneAngle;
         }
         if(usingHoe){
-            hoeWeapon.turn(turnAngle*-1 * lastSwing);
+            //hoeWeapon.turn(turnAngle*-1 * lastSwing);
+            
             hoeTurn = hoeTurn - turnAngle;
+            hoeRot = hoeRot + turnAngle*-1 * lastSwing;
             if(hoeTurn <= 0){
                 usingHoe = false;
                 lastSwing *= -1;
                 timeLastSwing = System.currentTimeMillis();
                 if(lastSwing == -1){ hoeWeapon.setImg("hoe2.png"); }
                 else { hoeWeapon.setImg("hoe1.png"); }
+                hoeRot = 0;
+                
             }
         }
+        
+        //hoeWeapon.setRotation((hoeDir-1)*90 + coneAngle/2*lastSwing + hoeRot);
     }
     
     public void roomTransition(){

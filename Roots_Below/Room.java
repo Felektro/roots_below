@@ -15,7 +15,7 @@ public class Room extends Actor
     
     public boolean topDoor, botDoor, rightDoor, leftDoor;
     
-    public boolean isShop, isGarden;
+    public boolean isShop, isGarden, isBoss;
     
     public boolean isCleared;
     
@@ -26,9 +26,9 @@ public class Room extends Actor
         this.x = x;
         this.y = y;
         if(!(x == 0 && y == 0)){
-            enemies = RoomLayout.randomRoomLayout();
+            enemies = RoomLayout.randomRoomLayout();  //REMOVE AFTER TESTING
         }
-        
+        //isCleared = true;
     }
     public void act()
     {
@@ -54,7 +54,7 @@ public class Room extends Actor
     }
     
     public void loadEnemies(){
-        if(enemies == null){return;}
+        if(enemies == null  || isShop || isGarden || isBoss){return;}
         for(int i = 0; i < enemies.size(); i++){
             if(!enemies.get(i).isDead){
                 greenfoot.core.WorldHandler.getInstance().getWorld().addObject(enemies.get(i), enemies.get(i).x, enemies.get(i).y);
@@ -63,7 +63,7 @@ public class Room extends Actor
     }
     
     public void checkEnemies(){
-        if(enemies == null){return;}
+        if(enemies == null  || isShop || isGarden || isBoss){return;}
         for(int i = 0; i < enemies.size(); i++){
             if(!enemies.get(i).isDead){
                 return;

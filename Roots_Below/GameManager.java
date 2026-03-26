@@ -1,6 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -169,6 +170,7 @@ public class GameManager extends Actor
             Pos shop = keys.get(Greenfoot.getRandomNumber(keys.size()));
             if(!shop.equals(new Pos(0, 0)) && distRooms(0, 0, shop.x, shop.y) >= shopDist){
                 rooms.get(shop).isShop = true;
+                rooms.get(shop).isCleared = true;
                 shopGenerated = true;
                 shopPos = shop;
             }
@@ -177,11 +179,32 @@ public class GameManager extends Actor
             Pos garden = keys.get(Greenfoot.getRandomNumber(keys.size()));
             if(!garden.equals(new Pos(0, 0)) && !rooms.get(garden).isShop && distRooms(garden.x, garden.y, shopPos.x, shopPos.y) >= shopDist){
                 rooms.get(garden).isGarden = true;
+                rooms.get(garden).isCleared = true;
                 gardenGenerated = true;
             }
         }
    
+        generateBossRoom();
         
+    }
+    
+    public void generateBossRoom(){
+        double maxDist = 0;
+        Pos maxDistPos = new Pos(0, 0);
+        for (Pos pos : rooms.keySet()){
+            if(rooms.get(pos).isShop == true || rooms.get(pos).isGarden == true){
+                continue;
+            }
+            
+            double dist = distRooms(0, 0, pos.x, pos.y);
+            
+            if(dist  >= maxDist){
+                maxDist = dist;
+                maxDistPos = pos;
+            }
+        }
+        
+        rooms.get(maxDistPos).isBoss = true;
     }
     
     public void setUpBasicRooms(){
