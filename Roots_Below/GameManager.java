@@ -189,16 +189,16 @@ public class GameManager extends Actor
     }
     
     public void generateBossRoom(){
-        double maxDist = 0;
+        double maxDist = 10; //0
         Pos maxDistPos = new Pos(0, 0);
         for (Pos pos : rooms.keySet()){
             if(rooms.get(pos).isShop == true || rooms.get(pos).isGarden == true){
                 continue;
             }
-            
+            if(pos.equals(new Pos(0, 0))) {continue;} // dont need
             double dist = distRooms(0, 0, pos.x, pos.y);
-            
-            if(dist  >= maxDist){
+            ////change to >=
+            if(dist  <= maxDist){
                 maxDist = dist;
                 maxDistPos = pos;
             }

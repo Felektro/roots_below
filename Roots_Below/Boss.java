@@ -1,36 +1,42 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Enemy here.
+ * Write a description of class Boss here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Enemy extends Actor
+public class Boss extends Actor 
 {
     /**
-     * Act - do whatever the Enemy wants to do. This method is called whenever
+     * Act - do whatever the Boss wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     
     GreenfootImage image;
     
     public String type;
-    public int hp = 30;
+    int maxHp = 100;
+    int hp;
     
-    public int x;
-    public int y;
-
     public boolean isDead;
     
-    public Enemy(int x, int y){
-        image = new GreenfootImage(50, 50);
+    BossHealthBar hpBar;
+    
+    public Boss(){
+        image = new GreenfootImage(150, 150);
         image.setColor(Color.RED);
-        image.fillOval(0, 0, 50, 50);
+        image.fillOval(0, 0, 150, 150);
         setImage(image);
-
-        this.x = x;
-        this.y = y;
+        
+        hp = maxHp;
+    }
+    
+    protected void addedToWorld(World world)
+    {
+        //System.out.println("added to world");
+        hpBar = new BossHealthBar(maxHp);
+        world.addObject(hpBar, 800, 850);
     }
     
     public void act()
@@ -53,6 +59,9 @@ public class Enemy extends Actor
     
     public void takeDmg(int dmg){
         hp -= dmg;
+        
+        hpBar.hp = hp;
+        
         if(hp <= 0){
             remove();
         }

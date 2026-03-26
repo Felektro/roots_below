@@ -68,7 +68,7 @@ public class Player extends Actor
         if (Greenfoot.isKeyDown("a")) {
             setLocation(getX() - playerSpeed, getY());
             animate(playerLeft);
-            getWorld().setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
+            getWorld().setPaintOrder(Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = -25;
             wallOffset = -10;
             hoeDir = 3;
@@ -78,7 +78,7 @@ public class Player extends Actor
         if (Greenfoot.isKeyDown("d")) {
             setLocation(getX() + playerSpeed, getY());
             animate(playerRight);
-            getWorld().setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
+            getWorld().setPaintOrder(Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = 25;
             wallOffset = 10;
             hoeDir = 1;
@@ -88,7 +88,7 @@ public class Player extends Actor
         if (Greenfoot.isKeyDown("w")) {
             setLocation(getX(), getY() - playerSpeed);
             animate(playerUp);
-            getWorld().setPaintOrder(Minimap.class, Player.class, HoeWeapon.class, Door.class);
+            getWorld().setPaintOrder(Minimap.class, BossHealthBar.class, Player.class, HoeWeapon.class, Door.class);
             hoeOffsetX = 0;
             hoeDir = 4;
             if(checkWall()) {setLocation(getX(), getY() + playerSpeed);}
@@ -97,7 +97,7 @@ public class Player extends Actor
         if (Greenfoot.isKeyDown("s")) {
             setLocation(getX(), getY() + playerSpeed);
             animate(playerDown);
-            getWorld().setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
+            getWorld().setPaintOrder(Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = 2;
             hoeDir = 2;
             if(checkWall()) {setLocation(getX(), getY() - playerSpeed);}
@@ -111,6 +111,7 @@ public class Player extends Actor
         
         if (Greenfoot.isKeyDown("space") && !usingHoe && (System.currentTimeMillis() - timeLastSwing)/1000.0 > swingDelay) {
             usingHoe = true;
+            hoeWeapon.isUsed = true;
             hoeTurn = coneAngle;
         }
         if(usingHoe){
@@ -120,6 +121,7 @@ public class Player extends Actor
             hoeRot = hoeRot + turnAngle*-1 * lastSwing;
             if(hoeTurn <= 0){
                 usingHoe = false;
+                hoeWeapon.isUsed = false;
                 lastSwing *= -1;
                 timeLastSwing = System.currentTimeMillis();
                 if(lastSwing == -1){ hoeWeapon.setImg("hoe2.png"); }

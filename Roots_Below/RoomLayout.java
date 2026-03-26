@@ -28,4 +28,8 @@ public class RoomLayout extends Actor
         
         return generatedRoom;
     }
+    
+    public static Boss bossLayout(){
+        return new Boss();
+    }
 }
