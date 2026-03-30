@@ -14,6 +14,7 @@ public class Enemy extends Actor
      */
     
     GreenfootImage image;
+    Room room;
     
     public String type;
     public int hp = 30;
@@ -22,15 +23,19 @@ public class Enemy extends Actor
     public int y;
 
     public boolean isDead;
+    public boolean isBossMinion;
     
-    public Enemy(int x, int y){
+    public Enemy(int x, int y, Room room, boolean boss){
         image = new GreenfootImage(50, 50);
         image.setColor(Color.RED);
         image.fillOval(0, 0, 50, 50);
         setImage(image);
 
+        isBossMinion = boss;
+        
         this.x = x;
         this.y = y;
+        this.room = room;
     }
     
     public void act()
@@ -48,6 +53,7 @@ public class Enemy extends Actor
             
             isDead = true;
             
+            room.openDoors();
         }
     }
     

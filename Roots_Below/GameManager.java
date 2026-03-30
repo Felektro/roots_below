@@ -87,6 +87,7 @@ public class GameManager extends Actor
         //System.out.println(currentPos.x + " " +currentPos.y);
         
         rooms.get(currentPos).loadRoom();
+        
     }
     
     public double distRooms(int x1, int y1, int x2, int y2){
