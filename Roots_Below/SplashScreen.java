@@ -8,8 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class SplashScreen extends World
 {
-    
-    
+
     public SplashScreen()
     {    
         super(1600, 900, 1);
@@ -20,11 +19,12 @@ public class SplashScreen extends World
         try {
             // to sleep 3 seconds
             Thread.sleep(3000);
+            transitionToMenu();
         } catch (InterruptedException e) {
             // recommended because catching InterruptedException clears interrupt flag
             Thread.currentThread().interrupt();
         }
-        
+        prepare();
     }
 
     public void showText(String message, int x, int y)
@@ -36,4 +36,15 @@ public class SplashScreen extends World
         bg.drawString(message, x, y);
     }
 
+    public void transitionToMenu(){
+        World menu = new Menu();
+        Greenfoot.setWorld(menu);
+    }
+    /**
+     * Prepare the world for the start of the program.
+     * That is: create the initial objects and add them to the world.
+     */
+    private void prepare()
+    {
+    }
 }
