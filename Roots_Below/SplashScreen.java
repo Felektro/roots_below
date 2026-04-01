@@ -15,8 +15,15 @@ public class SplashScreen extends World
         super(1600, 900, 1);
         GreenfootImage image = new GreenfootImage("vanier_Logo.png");
         getBackground().drawImage(image, (1600 - image.getWidth())/2, (900 - image.getHeight())/2);
-        showText("Game Programming 1 - 420-141-VA - Winter 2026", 100 , 100);
-        showText("Illia, Yuliia, Richard", 800 ,100);
+        showText("Game Programming 1 - 420-141-VA - Winter 2026", 230 , 100);
+        showText("Made by: Illia, Yuliia, Richard", 500 ,800);
+        try {
+            // to sleep 3 seconds
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            // recommended because catching InterruptedException clears interrupt flag
+            Thread.currentThread().interrupt();
+        }
         
     }
 
