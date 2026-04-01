@@ -25,7 +25,7 @@ public class MyWorld extends World
      */
     private void prepare()
     {
-        setPaintOrder(Minimap.class, HoeWeapon.class, Player.class, Door.class);
+        setPaintOrder(Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
         
         Minimap minimap = new Minimap();
         addObject(minimap,1500,100);

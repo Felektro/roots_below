@@ -18,14 +18,18 @@ public class RoomLayout extends Actor
         // Add your action code here.
     }
     
-    public static ArrayList<Enemy> randomRoomLayout(){
+    public static ArrayList<Enemy> randomRoomLayout(Room room){
         ArrayList<Enemy> generatedRoom = new ArrayList<>();
         for(int i = 0; i < Greenfoot.getRandomNumber(3) + 3; i++){
-            Enemy enemy = new Enemy(Greenfoot.getRandomNumber(1500) + 50, Greenfoot.getRandomNumber(800) + 50);
+            Enemy enemy = new Enemy(Greenfoot.getRandomNumber(1300) + 150, Greenfoot.getRandomNumber(600) + 150, room, false);
             enemy.isDead = false;
             generatedRoom.add(enemy);
         }
         
         return generatedRoom;
+    }
+    
+    public static Boss bossLayout(Room room){
+        return new Boss(room);
     }
 }

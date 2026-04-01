@@ -16,6 +16,7 @@ public class Door extends Actor
     private GameManager gm;
     
     private GreenfootImage image;
+    private GreenfootImage closed;
     
     public enum DoorType {
         LEFT, RIGHT, UP, DOWN
@@ -36,19 +37,24 @@ public class Door extends Actor
         switch (transition){
             case DoorType.UP:
                 image = new GreenfootImage("door_top.png");
+                closed = new GreenfootImage("door_top_closed.png");
                 break;
             case DoorType.RIGHT:
                 image = new GreenfootImage("door_right.png");
+                closed = new GreenfootImage("door_right_closed.png");
                 break;
             case DoorType.DOWN:
                 image = new GreenfootImage("door_bot.png");
+                closed = new GreenfootImage("door_bot_closed.png");
                 break;
             case DoorType.LEFT:
                 image = new GreenfootImage("door_left.png");
+                closed = new GreenfootImage("door_left_closed.png");
                 break;
         }
         
         image.scale((int)(image.getWidth()*10), (int)(image.getHeight()*10));
+        closed.scale((int)(closed.getWidth()*10), (int)(closed.getHeight()*10));
         
         setImage(image);
          
@@ -69,5 +75,9 @@ public class Door extends Actor
         if(bool) {image.setTransparency(255);}
         else {image.setTransparency(0);}
         setImage(image);
+    }
+    public void close(boolean bool){
+        if(bool) {setImage(closed);}
+        else {setImage(image);}
     }
 }

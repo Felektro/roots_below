@@ -15,7 +15,7 @@ public class Room extends Actor
     
     public boolean topDoor, botDoor, rightDoor, leftDoor;
     
-    public boolean isShop, isGarden;
+    public boolean isShop, isGarden, isBoss;
     
     public boolean isCleared;
     
@@ -26,9 +26,9 @@ public class Room extends Actor
         this.x = x;
         this.y = y;
         if(!(x == 0 && y == 0)){
-            enemies = RoomLayout.randomRoomLayout();
+            enemies = RoomLayout.randomRoomLayout(this);  //REMOVE AFTER TESTING
         }
-        
+        //isCleared = true;
     }
     public void act()
     {
@@ -54,7 +54,13 @@ public class Room extends Actor
     }
     
     public void loadEnemies(){
-        if(enemies == null){return;}
+        if(isBoss){
+            enemies.clear();
+            enemies = null;
+            
+            greenfoot.core.WorldHandler.getInstance().getWorld().addObject(RoomLayout.bossLayout(this), 800, 450);
+        }
+        if(enemies == null  || isShop || isGarden){return;}
         for(int i = 0; i < enemies.size(); i++){
             if(!enemies.get(i).isDead){
                 greenfoot.core.WorldHandler.getInstance().getWorld().addObject(enemies.get(i), enemies.get(i).x, enemies.get(i).y);
@@ -63,9 +69,9 @@ public class Room extends Actor
     }
     
     public void checkEnemies(){
-        if(enemies == null){return;}
+        if(enemies == null  || isShop || isGarden){return;}
         for(int i = 0; i < enemies.size(); i++){
-            if(!enemies.get(i).isDead){
+            if(!enemies.get(i).isDead || enemies.get(i).isBossMinion){
                 return;
             }            
         }
@@ -80,24 +86,28 @@ public class Room extends Actor
         }
     }
     
+    public void openDoors(){
+        checkEnemies();
+        loadDoors();
+    }
+    
     public void loadDoors(){
-        // System.out.println("====================");
-        // System.out.println(topDoor);
-        // System.out.println(botDoor);
-        // System.out.println(rightDoor);
-        // System.out.println(leftDoor);
         
         doors = (greenfoot.core.WorldHandler.getInstance()).getWorld().getObjects(Door.class);
         
         for (Door door : doors){
             if(topDoor && door.transition == Door.DoorType.UP){
                 door.makeVisible(true);
+                if(!isCleared) {door.close(true);}
             }else if(botDoor && door.transition == Door.DoorType.DOWN){
                 door.makeVisible(true);
+                if(!isCleared) {door.close(true);}
             }else if(rightDoor && door.transition == Door.DoorType.RIGHT){
                 door.makeVisible(true);
+                if(!isCleared) {door.close(true);}
             }else if(leftDoor && door.transition == Door.DoorType.LEFT){
                 door.makeVisible(true);
+                if(!isCleared) {door.close(true);}
             }else{
                 door.makeVisible(false);
             }
