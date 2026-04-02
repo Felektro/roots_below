@@ -32,7 +32,7 @@ public class Boss extends Actor
     int amountAttacks = 3;
     int lastAttack = 0;
     
-    float attackDelay = 10f;
+    float attackDelay = 5f;
     double timeLastAttack;
     
     public Boss(Room room){
@@ -73,7 +73,9 @@ public class Boss extends Actor
     
     
     public void chooseAttack(){
-        int attackNum = lastAttack;
+        spawnAttack();
+        return;
+        /*int attackNum = lastAttack;
         while(attackNum == lastAttack){
             attackNum = Greenfoot.getRandomNumber(amountAttacks);
         }
@@ -94,6 +96,8 @@ public class Boss extends Actor
                 break;
             
         }
+        
+        */
     }
     
     public void rootAttack(){
@@ -121,9 +125,6 @@ public class Boss extends Actor
     }
     
     public void spawnAttack(){
-        rootAttack();
-        return;
-        /*
         ArrayList<Enemy> enemies = new ArrayList<>();
         
         for (int i = 0; i < 3; i++){
@@ -141,15 +142,15 @@ public class Boss extends Actor
                 valid = valid && dist(x, y, player.getX(), player.getY()) >= 300;
                 valid = valid && dist(x, y, this.getX(), this.getY()) >= 300;
             } while (!valid);
-            Enemy enemy = new Enemy(x, y, room, true);
+            Enemy enemy = new Enemy(x, y, room, true, Enemy.EnemyType.TURRET);
             enemies.add(enemy);
             getWorld().addObject(enemy, x, y);
         }
-        */
+        
     }
     
     public void thirdAttack(){
-        rootAttack();
+        
     }
     
     

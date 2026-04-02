@@ -68,12 +68,15 @@ public class RootBossAttack extends Actor
     public void act()
     {
         scaleImg();
+        if(!isDead){
+            
+            Actor player = getOneIntersectingObject(Player.class);
         
-        Actor player = getOneIntersectingObject(Player.class);
-        
-        if(player != null && isActive){
-            //System.out.println("touching the player");
+            if(player != null && isActive){
+                //System.out.println("touching the player");
+            }
         }
+        
         
     }
     

@@ -21,7 +21,7 @@ public class RoomLayout extends Actor
     public static ArrayList<Enemy> randomRoomLayout(Room room){
         ArrayList<Enemy> generatedRoom = new ArrayList<>();
         for(int i = 0; i < Greenfoot.getRandomNumber(3) + 3; i++){
-            Enemy enemy = new Enemy(Greenfoot.getRandomNumber(1300) + 150, Greenfoot.getRandomNumber(600) + 150, room, false);
+            Enemy enemy = new Enemy(Greenfoot.getRandomNumber(1300) + 150, Greenfoot.getRandomNumber(600) + 150, room, false, Enemy.EnemyType.SLIME);
             enemy.isDead = false;
             generatedRoom.add(enemy);
         }
