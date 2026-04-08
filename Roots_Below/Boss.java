@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -21,13 +22,15 @@ public class Boss extends Actor
     int maxHp = 100;
     int hp;
     
+    public int hitboxRadius = 75;
+    
     public boolean isDead;
     
     BossHealthBar hpBar;
     
     Room room;
 
-    Player player;
+    Player playerObject;
     
     int amountAttacks = 3;
     int lastAttack = 0;
@@ -51,16 +54,15 @@ public class Boss extends Actor
         hpBar = new BossHealthBar(maxHp);
         world.addObject(hpBar, 800, 850);
         
-        player = (greenfoot.core.WorldHandler.getInstance()).getWorld().getObjects(Player.class).get(0);
+        playerObject = (greenfoot.core.WorldHandler.getInstance()).getWorld().getObjects(Player.class).get(0);
         
     }
     
     public void act()
     {
-        Actor player = getOneIntersectingObject(Player.class);
         
-        if(player != null){
-            //System.out.println("touching the player");
+        if(playerObject.detectHitbox(this, hitboxRadius)){
+            playerObject.takeDmg(2);
         }
         
         if((System.currentTimeMillis() - timeLastAttack)/1000.0 > attackDelay){
@@ -73,9 +75,7 @@ public class Boss extends Actor
     
     
     public void chooseAttack(){
-        spawnAttack();
-        return;
-        /*int attackNum = lastAttack;
+        int attackNum = lastAttack;
         while(attackNum == lastAttack){
             attackNum = Greenfoot.getRandomNumber(amountAttacks);
         }
@@ -97,7 +97,6 @@ public class Boss extends Actor
             
         }
         
-        */
     }
     
     public void rootAttack(){
@@ -115,7 +114,7 @@ public class Boss extends Actor
                 for (RootBossAttack root : roots){
                     valid = valid && dist(x, y, root.getX(), root.getY()) >= 300;
                 }
-                valid = valid && dist(x, y, player.getX(), player.getY()) >= 300;
+                valid = valid && dist(x, y, playerObject.getX(), playerObject.getY()) >= 300;
                 valid = valid && dist(x, y, this.getX(), this.getY()) >= 300;
             } while (!valid);
             RootBossAttack root = new RootBossAttack();
@@ -139,10 +138,16 @@ public class Boss extends Actor
                 for (Enemy enemy : enemies){
                     valid = valid && dist(x, y, enemy.x, enemy.y) >= 300;
                 }
-                valid = valid && dist(x, y, player.getX(), player.getY()) >= 300;
+                valid = valid && dist(x, y, playerObject.getX(), playerObject.getY()) >= 300;
                 valid = valid && dist(x, y, this.getX(), this.getY()) >= 300;
             } while (!valid);
-            Enemy enemy = new Enemy(x, y, room, true, Enemy.EnemyType.TURRET);
+            Enemy.EnemyType type;
+            if(Greenfoot.getRandomNumber(2) == 0){
+                type = Enemy.EnemyType.TURRET;
+            }else{
+                type = Enemy.EnemyType.SLIME;
+            }
+            Enemy enemy = new Enemy(x, y, room, true, type);
             enemies.add(enemy);
             getWorld().addObject(enemy, x, y);
         }
@@ -161,6 +166,13 @@ public class Boss extends Actor
     
     public void remove(){
         if(!isDead){
+            
+            List<Enemy> enemies = getWorld().getObjects(Enemy.class);   
+            
+            for(Enemy enemy : enemies){
+                enemy.remove();
+            }
+            
             getWorld().removeObject(this);
             
             isDead = true;

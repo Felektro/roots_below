@@ -1,4 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
+
 
 /**
  * Write a description of class Player here.
@@ -15,8 +17,12 @@ public class Player extends Actor
     
     public GameManager gm;
     
+    public int playerHealth = 10;
+    public int hitboxRadius = 35;
     public int playerSpeed = 5;
     public HoeWeapon hoeWeapon;
+    
+    public int knockback = 70;
     
     int hoeTurn;
     boolean usingHoe;
@@ -32,6 +38,9 @@ public class Player extends Actor
     float swingDelay = 0.3f;
     double timeLastSwing;
     
+    float dmgDelay = 0.75f;
+    double timeLastDmg;
+    
     float animDelay = 0.1f;
     double timeLastFrame;
     int currentFrame = 0;
@@ -43,6 +52,8 @@ public class Player extends Actor
     GreenfootImage[] playerLeft = new GreenfootImage[8];
     GreenfootImage[] playerUp = new GreenfootImage[8];
     GreenfootImage[] playerDown = new GreenfootImage[8];
+    
+    public ArrayList<Heart> hearts = new ArrayList<>();
     
     
     public Player(HoeWeapon hoe, GameManager gm){
@@ -185,6 +196,35 @@ public class Player extends Actor
         for (int i = 0; i < 8; i++){
             playerUp[i] = scaleImage("player_back_" + (i+1) + ".png");
         }
+    }
+    
+    public void setHearts(){
+        for(Heart heart : hearts){
+            heart.setFull(0);
+        }
+        for(int i = 0; i < playerHealth/2; i++){
+            hearts.get(i).setFull(2);
+        }
+        hearts.get(playerHealth/2).setFull(playerHealth%2);
+    }
+    
+    public boolean detectHitbox(Actor enemy, int distHitbox){
+        double dist = Math.sqrt((Math.pow(getX() - enemy.getX(), 2)+Math.pow(getY() - enemy.getY(), 2)));
+        return dist <= (distHitbox + hitboxRadius);
+    }
+    
+    public void takeDmg(int dmg){
+        if((System.currentTimeMillis() - timeLastDmg)/1000.0 > dmgDelay){
+            playerHealth -= dmg;
+            timeLastDmg = System.currentTimeMillis();
+            
+            if(playerHealth <= 0){
+                Greenfoot.stop();
+            }
+            setHearts();
+        }
+        
+        
     }
     
     public GreenfootImage scaleImage(String img){

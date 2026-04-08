@@ -15,6 +15,7 @@ public class Enemy extends Actor
     
     GreenfootImage image;
     Room room;
+    Player playerObject;
     
     public enum EnemyType {
         SKEL, SLIME, TURRET
@@ -22,6 +23,9 @@ public class Enemy extends Actor
     
     public EnemyType type;
     public int hp = 30;
+    public int hitboxRadius = 25;
+    public int speed = 3;
+    public int angle;
     
     public int x;
     public int y;
@@ -29,7 +33,7 @@ public class Enemy extends Actor
     public boolean isDead;
     public boolean isBossMinion;
     
-    float turretDelay = 1f;
+    float turretDelay = 2f;
     double timeLastShot;
     
     public Enemy(int x, int y, Room room, boolean boss, EnemyType type){
@@ -51,28 +55,42 @@ public class Enemy extends Actor
         this.room = room;
     }
     
+    protected void addedToWorld(World world)
+    {
+        //System.out.println("added to world");
+        
+        playerObject = (greenfoot.core.WorldHandler.getInstance()).getWorld().getObjects(Player.class).get(0);
+        
+    }
+    
     public void act()
     {
-        Actor player = getOneIntersectingObject(Player.class);
+        //System.out.println(playerObject.detectHitbox(this, hitboxRadius));
+        Actor player = (greenfoot.core.WorldHandler.getInstance()).getWorld().getObjects(Player.class).get(0);
+        angle = (int)Math.toDegrees(Math.atan2(player.getY() - getY(),player.getX() -  getX()));
         
-        if(player != null){
-            //System.out.println("touching the player");
+        if(playerObject.detectHitbox(this, hitboxRadius)){
+            playerObject.takeDmg(1);
         }
         
         if(type == EnemyType.TURRET){
             turretShoot();
         }
+        if(type == EnemyType.SLIME){
+            slimeAttack();
+        }
+        
+    }
+    
+    public void slimeAttack(){
+        setRotation(angle);
+        move(speed);
     }
     
     public void turretShoot(){
         if((System.currentTimeMillis() - timeLastShot)/1000.0 > turretDelay){
-            Actor player = (greenfoot.core.WorldHandler.getInstance()).getWorld().getObjects(Player.class).get(0);
-            int angle = (int)Math.toDegrees(Math.atan2(player.getY() - getY(),player.getX() -  getX()));
-            System.out.println(angle);
-            
             getWorld().addObject(new SporeBullet(angle), getX(), getY());
-            
-            //System.out.println("Attack");
+
             timeLastShot = System.currentTimeMillis();
         }
     }
@@ -92,5 +110,12 @@ public class Enemy extends Actor
         if(hp <= 0){
             remove();
         }
+        
+        if(angle < 0){
+            angle += 360;
+        }
+        
+        setRotation(angle-180);
+        move(playerObject.knockback);
     }
 }

@@ -25,7 +25,7 @@ public class MyWorld extends World
      */
     private void prepare()
     {
-        setPaintOrder(Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
+        setPaintOrder(Heart.class, Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
         
         Minimap minimap = new Minimap();
         addObject(minimap,1500,100);
@@ -47,6 +47,11 @@ public class MyWorld extends World
         
         Player player = new Player(hoe, gm);
         addObject(player, 800, 450);
+        
+        for (int i = 0; i < player.playerHealth/2; i++){
+            player.hearts.add(new Heart());
+            addObject(player.hearts.get(i), 50 + i * (32 * 2 + 15), 50);
+        }
         
         Wall wall1 = new Wall();
         addObject(wall1, 800, 450);

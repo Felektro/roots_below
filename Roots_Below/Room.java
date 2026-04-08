@@ -25,6 +25,7 @@ public class Room extends Actor
     public Room(int x, int y){
         this.x = x;
         this.y = y;
+        
         if(!(x == 0 && y == 0)){
             enemies = RoomLayout.randomRoomLayout(this);  //REMOVE AFTER TESTING
         }
@@ -54,7 +55,7 @@ public class Room extends Actor
     }
     
     public void loadEnemies(){
-        if(isBoss){
+        if(isBoss && enemies != null){
             enemies.clear();
             enemies = null;
             

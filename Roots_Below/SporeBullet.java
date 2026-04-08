@@ -14,23 +14,38 @@ public class SporeBullet extends Actor
      */
     
     GreenfootImage image;
+    
+    Player playerObject;
 
     int wallWidth = 15 * 10;
+    
+    public int hitboxRadius = 15/2;
     
     int speed = 5;
     
     boolean isDead;
     
+    protected void addedToWorld(World world)
+    {
+        //System.out.println("added to world");
+        
+        playerObject = (greenfoot.core.WorldHandler.getInstance()).getWorld().getObjects(Player.class).get(0);
+        
+    }
     
     public void act()
     {
         move(speed);
         
-        if(!isDead){
-            Actor player = getOneIntersectingObject(Player.class);
+        //System.out.println(playerObject.detectHitbox(this, hitboxRadius));
         
-            if(player != null){
-                //System.out.println("touching the player");
+        if(!isDead){
+        
+            if(playerObject.detectHitbox(this, hitboxRadius)){
+                playerObject.takeDmg(1);
+                isDead = true;
+                getWorld().removeObject(this);
+                return;
             }
         
             if(checkWall()){

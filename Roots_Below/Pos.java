@@ -21,6 +21,13 @@ public class Pos extends Actor
         this.y = y;
     }
     
+    public int getX(){
+        return x;
+    }
+    public int getY(){
+        return y;
+    }
+    
     public void act()
     {
         // Add your action code here.
