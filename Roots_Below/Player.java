@@ -114,6 +114,8 @@ public class Player extends Actor
             if(checkWall()) {setLocation(getX(), getY() - playerSpeed);}
             //if(!usingHoe) {hoeWeapon.setRotation(90 + coneAngle/2*lastSwing);}
         }
+        
+        hoeWeapon.hoeDir = hoeDir;
     }
     
     public void hoeUse(){
