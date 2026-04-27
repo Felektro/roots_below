@@ -16,6 +16,7 @@ public class Player extends Actor
      */
     
     public GameManager gm;
+    public Inventory inv;
     
     public int playerHealth = 10;
     public int hitboxRadius = 35;
@@ -34,6 +35,8 @@ public class Player extends Actor
     
     int hoeOffsetX = 0;
     int hoeOffsetY = 20;
+    
+    int invOffset = -100;
     
     float swingDelay = 0.3f;
     double timeLastSwing;
@@ -56,9 +59,10 @@ public class Player extends Actor
     public ArrayList<Heart> hearts = new ArrayList<>();
     
     
-    public Player(HoeWeapon hoe, GameManager gm){
+    public Player(HoeWeapon hoe, GameManager gm, Inventory inv){
         hoeWeapon = hoe;
         this.gm = gm;
+        this.inv = inv;
         
         hoeWeapon.turn(90 + coneAngle/2);
         
@@ -114,6 +118,13 @@ public class Player extends Actor
             if(checkWall()) {setLocation(getX(), getY() - playerSpeed);}
             //if(!usingHoe) {hoeWeapon.setRotation(90 + coneAngle/2*lastSwing);}
         }
+        
+        String key = Greenfoot.getKey();
+        if ("e".equals(key)) {
+            inv.openInventory();
+        }
+        
+        inv.setLocation(getX(), getY() + invOffset);    
     }
     
     public void hoeUse(){

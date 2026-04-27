@@ -42,7 +42,7 @@ public class Minimap extends Actor
         image.setColor(Color.BLACK);
         
         for(int i = 0; i<5; i++){
-            image.drawRect(i, i, minimapW-i*2, minimapW-i*2);
+            image.drawRect(i, i, minimapW-i*2-1, minimapW-i*2-1);
         }
         
         setImage(image);
