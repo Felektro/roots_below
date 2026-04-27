@@ -119,12 +119,15 @@ public class Player extends Actor
             //if(!usingHoe) {hoeWeapon.setRotation(90 + coneAngle/2*lastSwing);}
         }
         
+
         String key = Greenfoot.getKey();
         if ("e".equals(key)) {
             inv.openInventory();
         }
         
         inv.setLocation(getX(), getY() + invOffset);    
+        hoeWeapon.hoeDir = hoeDir;
+
     }
     
     public void hoeUse(){

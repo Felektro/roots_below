@@ -195,13 +195,15 @@ public class Enemy extends Actor
         if(hp <= 0){
             remove();
         }
-        
-        if(angle < 0){
-            angle += 360;
+        if(type != EnemyType.TURRET){
+            if(angle < 0){
+                angle += 360;
+            }
+            
+            setRotation(angle-180);
+            move(playerObject.knockback);
         }
         
-        setRotation(angle-180);
-        move(playerObject.knockback);
     }
     
     public double dist(int x1, int y1, int x2, int y2){
