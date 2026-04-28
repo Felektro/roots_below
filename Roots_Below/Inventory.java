@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.util.ArrayList;
+import java.util.Arrays;
 /**
  * Write a description of class Inventory here.
  * 
@@ -20,7 +21,40 @@ public class Inventory extends Actor
     private int cellSize = 40;
     
     private int invWidth = 200 + 10;
-    private int invHeight = cellSize + 10;
+    private int invHeight = cellSize*2 + 10;
+    
+    public ItemDrop[] items = new ItemDrop[10];
+    public int[] itemCount = new int[10];
+    
+    int commonR = 50;
+    int rareR = 30;
+    int epicR = 15;
+    int legendR = 5;
+    
+    public enum rarity{COMMON, RARE, EPIC, LEGEND};
+
+    ArrayList<ItemDrop> commons = new ArrayList();
+    ArrayList<ItemDrop> rares = new ArrayList();
+    ArrayList<ItemDrop> epics = new ArrayList();
+    ItemDrop legend;
+    
+    boolean firstTime = true;
+    
+    private rarity pickRarity(){
+        int rarityNum = Greenfoot.getRandomNumber(100);
+        rarity itemRar;
+        if(rarityNum <= commonR){
+            itemRar = rarity.COMMON;
+        }else if(commonR < rarityNum && rarityNum < commonR + rareR){
+            itemRar = rarity.RARE;
+        }else if(commonR + rareR <= rarityNum && rarityNum < commonR + rareR + epicR){
+            itemRar = rarity.EPIC;
+        } else {
+            itemRar = rarity.LEGEND;
+        }
+        return itemRar;
+    }
+    
     
     public Inventory(){
         image = new GreenfootImage(invWidth, invHeight);
@@ -28,17 +62,111 @@ public class Inventory extends Actor
         setImage(drawContour(image, Color.BLACK, invWidth, invHeight));
         
         for (int i = 0; i < 5; i++){
-            drawCell(cellSize, i * cellSize + 5, 5);
+            drawCell(cellSize, i * cellSize + 5, 5, Color.DARK_GRAY);
+        }
+        for (int i = 0; i < 5; i++){
+            drawCell(cellSize, i * cellSize + 5, 5 + cellSize, Color.DARK_GRAY);
         }
         
         image.setTransparency(0);
         
         setImage(image);
+        
+        setUpItemPool();
+        
     }
+    
+    public void setUpItemPool(){
+        commons.add(new ItemDrop("Thorn Seed", "-", ItemDrop.seedType.THORN));
+        commons.add(new ItemDrop("Sap Seed", "-", ItemDrop.seedType.SAP));
+        commons.add(new ItemDrop("Bloom Seed", "-", ItemDrop.seedType.BLOOM));
+        commons.add(new ItemDrop("Root Seed", "-", ItemDrop.seedType.ROOT));
+        
+        rares.add(new ItemDrop("Spore Seed", "-", ItemDrop.seedType.SPORE));
+        rares.add(new ItemDrop("Vine Seed", "-", ItemDrop.seedType.VINE));
+        rares.add(new ItemDrop("Flame Seed", "-", ItemDrop.seedType.FLAME));
+        
+        epics.add(new ItemDrop("Moon Seed", "-", ItemDrop.seedType.MOON));
+        epics.add(new ItemDrop("Iron Seed", "-", ItemDrop.seedType.IRON));
+        
+        legend = new ItemDrop("Electro Seed", "-", ItemDrop.seedType.ZAP);
+        
+        
+        //THORN, SAP, BLOOM, ROOT, SPORE, VINE, FLAME, MOON, IRON, ZAP
+    }
+    
     
     public void act()
     {
-        // Add your action code here.
+        if(firstTime){
+            for(int i = 0; i < 10; i++){
+                getWorld().addObject(new ItemDrop(), 200 + i * 50, 200);
+            }
+            
+            firstTime = false;
+        }
+        
+    }
+    
+    public void itemPickup(){
+        rarity itemRar = pickRarity();
+        ItemDrop item = null;
+        
+        switch(itemRar){
+            case rarity.COMMON:
+                item = commons.get(Greenfoot.getRandomNumber(commons.size()));
+                break;
+            case rarity.RARE:
+                item = rares.get(Greenfoot.getRandomNumber(rares.size()));
+                break;
+            case rarity.EPIC:
+                item = epics.get(Greenfoot.getRandomNumber(epics.size()));
+                break;
+            case rarity.LEGEND:
+                item = legend;
+                break;
+        }
+        
+        //System.out.println(item);
+        
+        addToInv(item);
+    }
+    
+    public void addToInv(ItemDrop item){
+        int index = 0;
+        
+        for (int i = 0; i < items.length; i++){
+            if(items[i] == null){
+                items[i] = item;
+                System.out.println("added item " + item + " at " + i);
+                index = i;
+                itemCount[i]++; 
+                break;
+            }
+            
+            if(items[i].equals(item)){
+                System.out.println("added item " + item + " at " + i + " because theyre the same type of seed");
+                index = i;
+                itemCount[i]++;
+                break;
+            }
+        }
+        System.out.println(Arrays.toString(itemCount));
+        
+        drawItem(index);
+        
+        setImage(image);
+    }
+    
+    public void drawItem(int index){
+        Color c = items[index].getColor();
+        
+        int column = index % 5;
+        int row = (index < 5) ? 0 : 1;
+        
+        drawCell(cellSize, column * cellSize + 5, 5 + row * cellSize, c);
+        
+        setImage(image);
     }
     
     public void openInventory(){
@@ -59,10 +187,10 @@ public class Inventory extends Actor
         return img;
     }
     
-    public void drawCell(int size, int xOffset, int yOffset){
+    public void drawCell(int size, int xOffset, int yOffset, Color c){
         GreenfootImage cell = new GreenfootImage(size, size);
         
-        cell.setColor(Color.RED);
+        cell.setColor(c);
         cell.fillRect(0, 0, size, size);
         
         cell.drawImage(drawContour(cell, Color.GRAY, size, size), 0, 0);

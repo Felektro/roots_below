@@ -36,7 +36,7 @@ public class Player extends Actor
     int hoeOffsetX = 0;
     int hoeOffsetY = 20;
     
-    int invOffset = -100;
+    int invOffset = -115;
     
     float swingDelay = 0.3f;
     double timeLastSwing;
@@ -77,6 +77,10 @@ public class Player extends Actor
         hoeUse();
         
         //System.out.println(getX() + "  " + getY());
+    }
+    
+    public void addToInv(){
+        inv.itemPickup();
     }
     
     public void movement(){
@@ -237,8 +241,6 @@ public class Player extends Actor
             }
             setHearts();
         }
-        
-        
     }
     
     public GreenfootImage scaleImage(String img){
@@ -256,4 +258,6 @@ public class Player extends Actor
         
         return !((wallWidth < x && x < 1600 - wallWidth) && (wallWidth < y && y < 900 - wallWidth));
     }
+    
+    
 }

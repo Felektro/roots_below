@@ -90,6 +90,16 @@ public class Room extends Actor
     public void openDoors(){
         checkEnemies();
         loadDoors();
+        
+        spawnItemDrop();
+    }
+    
+    public void spawnItemDrop(){
+        if(!isCleared){
+            return;
+        }
+        
+        greenfoot.core.WorldHandler.getInstance().getWorld().addObject(new ItemDrop(), 800, 450);
     }
     
     public void loadDoors(){
