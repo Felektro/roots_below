@@ -58,8 +58,11 @@ public class Player extends Actor
     
     public ArrayList<Heart> hearts = new ArrayList<>();
     
+    boolean usingPedestal;
     
-    public Player(HoeWeapon hoe, GameManager gm, Inventory inv){
+    point p;
+    
+    public Player(HoeWeapon hoe, GameManager gm, Inventory inv, point p){
         hoeWeapon = hoe;
         this.gm = gm;
         this.inv = inv;
@@ -68,6 +71,9 @@ public class Player extends Actor
         
         setImage(scaleImage("player_front.png"));
         setAnimImages();
+        
+        
+        this.p = p;
     }
     
     public void act()
@@ -84,39 +90,39 @@ public class Player extends Actor
     }
     
     public void movement(){
-        if (Greenfoot.isKeyDown("a")) {
+        if (Greenfoot.isKeyDown("a") && !usingPedestal) {
             setLocation(getX() - playerSpeed, getY());
             animate(playerLeft);
-            getWorld().setPaintOrder(Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
+            getWorld().setPaintOrder(point.class,Minimap.class, Inventory.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = -25;
             wallOffset = -10;
             hoeDir = 3;
             if(checkWall()) {setLocation(getX() + playerSpeed, getY());}
             //if(!usingHoe) {hoeWeapon.setRotation(180 + coneAngle/2*lastSwing);}
         }
-        if (Greenfoot.isKeyDown("d")) {
+        if (Greenfoot.isKeyDown("d") && !usingPedestal) {
             setLocation(getX() + playerSpeed, getY());
             animate(playerRight);
-            getWorld().setPaintOrder(Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
+            getWorld().setPaintOrder(point.class,Minimap.class, Inventory.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = 25;
             wallOffset = 10;
             hoeDir = 1;
             if(checkWall()) {setLocation(getX() - playerSpeed, getY());}
             //if(!usingHoe) {hoeWeapon.setRotation(0 + coneAngle/2*lastSwing);}
         }
-        if (Greenfoot.isKeyDown("w")) {
+        if (Greenfoot.isKeyDown("w") && !usingPedestal) {
             setLocation(getX(), getY() - playerSpeed);
             animate(playerUp);
-            getWorld().setPaintOrder(Minimap.class, BossHealthBar.class, Player.class, HoeWeapon.class, Door.class);
+            getWorld().setPaintOrder(point.class,Minimap.class, Inventory.class, BossHealthBar.class, Player.class, HoeWeapon.class, Door.class);
             hoeOffsetX = 0;
             hoeDir = 4;
             if(checkWall()) {setLocation(getX(), getY() + playerSpeed);}
             //if(!usingHoe) {hoeWeapon.setRotation(270 + coneAngle/2*lastSwing);}
         }
-        if (Greenfoot.isKeyDown("s")) {
+        if (Greenfoot.isKeyDown("s") && !usingPedestal) {
             setLocation(getX(), getY() + playerSpeed);
             animate(playerDown);
-            getWorld().setPaintOrder(Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
+            getWorld().setPaintOrder(point.class,Minimap.class, Inventory.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = 2;
             hoeDir = 2;
             if(checkWall()) {setLocation(getX(), getY() - playerSpeed);}
@@ -126,12 +132,22 @@ public class Player extends Actor
 
         String key = Greenfoot.getKey();
         if ("e".equals(key)) {
+            if(!getObjectsInRange(200, SeedPedestal.class).isEmpty()){
+                SeedPedestal seedPedestal = (SeedPedestal)getObjectsInRange(200, SeedPedestal.class).get(0);
+                usingPedestal = !usingPedestal;
+                
+            }
+            
             inv.openInventory();
         }
+        
+        //System.out.println("next to the pedestal" + usingPedestal);
         
         inv.setLocation(getX(), getY() + invOffset);    
         hoeWeapon.hoeDir = hoeDir;
 
+        p.setLocation(getX(), getY()+60);
+        checkWall();
     }
     
     public void hoeUse(){
@@ -255,6 +271,21 @@ public class Player extends Actor
     public boolean checkWall(){
         int x = getX() + wallOffset;
         int y = getY() + 60;
+        
+        if(!getObjectsInRange(200, SeedPedestal.class).isEmpty()){
+            Actor pedestal = getObjectsInRange(200, SeedPedestal.class).get(0);
+            int pedestalRadius = 75;
+            
+            double dx = Math.abs(getX()-pedestal.getX());
+            double dy = Math.abs(y-pedestal.getY());
+            
+            System.out.println("X " + getX() + " dx = " + dx + " x of pedestal " + pedestal.getX());
+            System.out.println("Y " + getY() + " Y of feet " + y + " dy = " + dy + " y of pedestal " + pedestal.getY());
+            System.out.println((dx <= (pedestalRadius + 20) && dy <= (pedestalRadius)));
+            
+            return (dx <= (pedestalRadius + 20) && dy <= (pedestalRadius));
+            
+        }
         
         return !((wallWidth < x && x < 1600 - wallWidth) && (wallWidth < y && y < 900 - wallWidth));
     }

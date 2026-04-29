@@ -55,6 +55,9 @@ public class Room extends Actor
     }
     
     public void loadEnemies(){
+        if(isGarden){
+            greenfoot.core.WorldHandler.getInstance().getWorld().addObject(new SeedPedestal(), 800, 450);
+        }
         if(isBoss && enemies != null){
             enemies.clear();
             enemies = null;
