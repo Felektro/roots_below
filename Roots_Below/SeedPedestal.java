@@ -15,7 +15,8 @@ public class SeedPedestal extends Actor
     
     GreenfootImage image;
     
-    point p = new point();
+    
+    
     boolean firstTime = true;
     public SeedPedestal(){
         image = new GreenfootImage(150, 150);
@@ -28,10 +29,6 @@ public class SeedPedestal extends Actor
     
     public void act()
     {
-        if(firstTime){
-            getWorld().addObject(p, 0, 0);
-            firstTime = false;
-        }
-        p.setLocation(getX(), getY() - 75);
+        //
     }
 }

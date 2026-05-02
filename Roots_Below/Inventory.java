@@ -16,7 +16,7 @@ public class Inventory extends Actor
     
     GreenfootImage image;
     
-    private boolean isClosed = true;
+    public boolean isClosed = true;
     
     private int cellSize = 40;
     
@@ -40,6 +40,15 @@ public class Inventory extends Actor
     
     boolean firstTime = true;
     
+    boolean pedestalMenuOpen = false;
+    int pickedItem = 0;
+    
+    InventoryBackground bg = new InventoryBackground(this); 
+    Player player;
+    
+    float inputDelay = 0.2f;
+    double timeLastInput;
+    
     private rarity pickRarity(){
         int rarityNum = Greenfoot.getRandomNumber(100);
         rarity itemRar;
@@ -62,10 +71,10 @@ public class Inventory extends Actor
         setImage(drawContour(image, Color.BLACK, invWidth, invHeight));
         
         for (int i = 0; i < 5; i++){
-            drawCell(cellSize, i * cellSize + 5, 5, Color.DARK_GRAY);
+            drawCell(cellSize, i * cellSize + 5, 5, Color.DARK_GRAY, Color.GRAY);
         }
         for (int i = 0; i < 5; i++){
-            drawCell(cellSize, i * cellSize + 5, 5 + cellSize, Color.DARK_GRAY);
+            drawCell(cellSize, i * cellSize + 5, 5 + cellSize, Color.DARK_GRAY, Color.GRAY);
         }
         
         image.setTransparency(0);
@@ -73,6 +82,7 @@ public class Inventory extends Actor
         setImage(image);
         
         setUpItemPool();
+        
         
     }
     
@@ -104,8 +114,84 @@ public class Inventory extends Actor
             }
             
             firstTime = false;
+            
+            this.player = getWorld().getObjects(Player.class).get(0);
         }
         
+        if(pedestalMenuOpen){
+            if (Greenfoot.isKeyDown("a")) {
+                moveMenu("left");
+            }
+            if (Greenfoot.isKeyDown("d")) {
+                moveMenu("right");
+            }
+            if (Greenfoot.isKeyDown("w")) {
+                moveMenu("up");
+            }
+            if (Greenfoot.isKeyDown("s")) {
+                moveMenu("down");
+            }
+            if(Greenfoot.isKeyDown("space")){
+                moveMenu("use");
+            }
+        }
+        
+    }
+    
+    public void moveMenu(String dir){
+        
+        if((System.currentTimeMillis() - timeLastInput)/1000.0 > inputDelay){
+            switch(dir){
+                case "right":
+                    pickedItem++;
+                    if(pickedItem > 9){
+                        pickedItem = 0;
+                    }
+                    break;
+                case "left":
+                    pickedItem--;
+                    if(pickedItem < 0){
+                        pickedItem = 9;
+                    }
+                    break;
+                case "up":
+                    pickedItem -= 5;
+                    if(pickedItem < 0){
+                        pickedItem += 10;
+                    }
+                    break;
+                case "down":
+                    pickedItem += 5;
+                    if(pickedItem > 9){
+                        pickedItem -= 10;
+                    }
+                    break;
+                case "use":
+                    if(itemCount[pickedItem] > 0){
+                        player.addBonus(items[pickedItem]);
+                        itemCount[pickedItem]--;
+                        if(itemCount[pickedItem] == 0){
+                            items[pickedItem] = null;
+                        }
+                    }
+                    
+                    
+                    break;
+            }
+            
+            drawPickedCell(pickedItem);
+            
+            timeLastInput = System.currentTimeMillis();
+        }
+        
+    }
+    
+    public void drawPickedCell(int cellID){
+        for (int i = 0; i < items.length; i++){
+            drawItem(i, Color.GRAY);
+        }
+        
+        drawItem(cellID, Color.RED);
     }
     
     public void itemPickup(){
@@ -138,45 +224,74 @@ public class Inventory extends Actor
         for (int i = 0; i < items.length; i++){
             if(items[i] == null){
                 items[i] = item;
-                System.out.println("added item " + item + " at " + i);
+                //System.out.println("added item " + item + " at " + i);
                 index = i;
                 itemCount[i]++; 
                 break;
             }
             
             if(items[i].equals(item)){
-                System.out.println("added item " + item + " at " + i + " because theyre the same type of seed");
+                //System.out.println("added item " + item + " at " + i + " because theyre the same type of seed");
                 index = i;
                 itemCount[i]++;
                 break;
             }
         }
-        System.out.println(Arrays.toString(itemCount));
+        //System.out.println(Arrays.toString(itemCount));
         
-        drawItem(index);
+        drawItem(index, Color.GRAY);
         
         setImage(image);
     }
     
-    public void drawItem(int index){
-        Color c = items[index].getColor();
+    public void drawItem(int index, Color cBor){
+        
+        //System.out.println(Arrays.toString(items));
+        //System.out.println(Arrays.toString(itemCount));
+        
+        Color c = (itemCount[index] != 0) ? items[index].getColor() : Color.DARK_GRAY;
         
         int column = index % 5;
         int row = (index < 5) ? 0 : 1;
         
-        drawCell(cellSize, column * cellSize + 5, 5 + row * cellSize, c);
+        drawCell(cellSize, column * cellSize + 5, 5 + row * cellSize, c, cBor);
         
         setImage(image);
     }
     
     public void openInventory(){
+        if(pedestalMenuOpen == false){
+            for (int i = 0; i < items.length; i++){
+                drawItem(i, Color.GRAY);
+            }
+        }
+                
         if(isClosed){ image.setTransparency(255); }
         else{ image.setTransparency(0); }
         
         isClosed = !isClosed;
         setImage(image);
     }
+    
+    public void openPedestalMenu(){
+        getWorld().addObject(bg, 800, 450);
+        pedestalMenuOpen = true;
+        pickedItem = 0;
+        drawPickedCell(pickedItem);
+        if(!isClosed){
+            bg.close();
+            pedestalMenuOpen = false;
+        }
+        
+        openInventory();
+    }
 
+    public void closePedestalMenu(){
+        player.usingPedestal = false;
+        pedestalMenuOpen = false;
+        openInventory();
+    }
+    
     public GreenfootImage drawContour(GreenfootImage img, Color color, int width, int height){
         img.setColor(color);
         
@@ -187,16 +302,17 @@ public class Inventory extends Actor
         return img;
     }
     
-    public void drawCell(int size, int xOffset, int yOffset, Color c){
+    public void drawCell(int size, int xOffset, int yOffset, Color c, Color cBor){
         GreenfootImage cell = new GreenfootImage(size, size);
         
         cell.setColor(c);
         cell.fillRect(0, 0, size, size);
         
-        cell.drawImage(drawContour(cell, Color.GRAY, size, size), 0, 0);
+        cell.drawImage(drawContour(cell, cBor, size, size), 0, 0);
         
         image.drawImage(cell, xOffset, yOffset);
     }
+    
     
     
 }

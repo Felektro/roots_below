@@ -60,9 +60,10 @@ public class Player extends Actor
     
     boolean usingPedestal;
     
-    point p;
+    ArrayList<ItemDrop> addedBonuses = new ArrayList<>();
     
-    public Player(HoeWeapon hoe, GameManager gm, Inventory inv, point p){
+    
+    public Player(HoeWeapon hoe, GameManager gm, Inventory inv){
         hoeWeapon = hoe;
         this.gm = gm;
         this.inv = inv;
@@ -73,7 +74,6 @@ public class Player extends Actor
         setAnimImages();
         
         
-        this.p = p;
     }
     
     public void act()
@@ -89,11 +89,15 @@ public class Player extends Actor
         inv.itemPickup();
     }
     
+    public void addBonus(ItemDrop drop){
+        addedBonuses.add(drop);
+    }
+    
     public void movement(){
         if (Greenfoot.isKeyDown("a") && !usingPedestal) {
             setLocation(getX() - playerSpeed, getY());
             animate(playerLeft);
-            getWorld().setPaintOrder(point.class,Minimap.class, Inventory.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
+            getWorld().setPaintOrder(Inventory.class, InventoryBackground.class, Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = -25;
             wallOffset = -10;
             hoeDir = 3;
@@ -103,7 +107,7 @@ public class Player extends Actor
         if (Greenfoot.isKeyDown("d") && !usingPedestal) {
             setLocation(getX() + playerSpeed, getY());
             animate(playerRight);
-            getWorld().setPaintOrder(point.class,Minimap.class, Inventory.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
+            getWorld().setPaintOrder(Inventory.class, InventoryBackground.class, Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = 25;
             wallOffset = 10;
             hoeDir = 1;
@@ -113,7 +117,7 @@ public class Player extends Actor
         if (Greenfoot.isKeyDown("w") && !usingPedestal) {
             setLocation(getX(), getY() - playerSpeed);
             animate(playerUp);
-            getWorld().setPaintOrder(point.class,Minimap.class, Inventory.class, BossHealthBar.class, Player.class, HoeWeapon.class, Door.class);
+            getWorld().setPaintOrder(Inventory.class, InventoryBackground.class, Minimap.class, BossHealthBar.class, Player.class, HoeWeapon.class, Door.class);
             hoeOffsetX = 0;
             hoeDir = 4;
             if(checkWall()) {setLocation(getX(), getY() + playerSpeed);}
@@ -122,7 +126,7 @@ public class Player extends Actor
         if (Greenfoot.isKeyDown("s") && !usingPedestal) {
             setLocation(getX(), getY() + playerSpeed);
             animate(playerDown);
-            getWorld().setPaintOrder(point.class,Minimap.class, Inventory.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
+            getWorld().setPaintOrder(Inventory.class, InventoryBackground.class, Minimap.class, BossHealthBar.class, HoeWeapon.class, Player.class, Door.class);
             hoeOffsetX = 2;
             hoeDir = 2;
             if(checkWall()) {setLocation(getX(), getY() - playerSpeed);}
@@ -135,10 +139,10 @@ public class Player extends Actor
             if(!getObjectsInRange(200, SeedPedestal.class).isEmpty()){
                 SeedPedestal seedPedestal = (SeedPedestal)getObjectsInRange(200, SeedPedestal.class).get(0);
                 usingPedestal = !usingPedestal;
-                
-            }
+                inv.openPedestalMenu();
+            }else {inv.openInventory();}
             
-            inv.openInventory();
+            
         }
         
         //System.out.println("next to the pedestal" + usingPedestal);
@@ -146,7 +150,6 @@ public class Player extends Actor
         inv.setLocation(getX(), getY() + invOffset);    
         hoeWeapon.hoeDir = hoeDir;
 
-        p.setLocation(getX(), getY()+60);
         checkWall();
     }
     
@@ -154,7 +157,7 @@ public class Player extends Actor
         hoeWeapon.setLocation(getX() + hoeOffsetX, getY() + hoeOffsetY);
         hoeWeapon.setRotation((hoeDir-1)*90 + coneAngle/2*lastSwing + hoeRot);
         
-        if (Greenfoot.isKeyDown("space") && !usingHoe && (System.currentTimeMillis() - timeLastSwing)/1000.0 > swingDelay) {
+        if (Greenfoot.isKeyDown("space") && !usingHoe && (System.currentTimeMillis() - timeLastSwing)/1000.0 > swingDelay && !usingPedestal) {
             usingHoe = true;
             hoeWeapon.isUsed = true;
             hoeTurn = coneAngle;
@@ -279,9 +282,11 @@ public class Player extends Actor
             double dx = Math.abs(getX()-pedestal.getX());
             double dy = Math.abs(y-pedestal.getY());
             
+            /*
             System.out.println("X " + getX() + " dx = " + dx + " x of pedestal " + pedestal.getX());
             System.out.println("Y " + getY() + " Y of feet " + y + " dy = " + dy + " y of pedestal " + pedestal.getY());
             System.out.println((dx <= (pedestalRadius + 20) && dy <= (pedestalRadius)));
+            */
             
             return (dx <= (pedestalRadius + 20) && dy <= (pedestalRadius));
             
