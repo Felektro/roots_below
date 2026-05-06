@@ -13,10 +13,14 @@ public class MenuButton extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     
+    String imgName;
+    
     GreenfootImage image;
     GreenfootImage hoveredImage;
     
     public MenuButton(String imgName){
+        this.imgName = imgName;
+        
         image = new GreenfootImage(imgName);
         
         hoveredImage = drawContour(image, new Color(28, 115, 68), image.getWidth(), image.getHeight());
@@ -42,7 +46,11 @@ public class MenuButton extends Actor
 
         if (Greenfoot.mouseClicked(this))
         {
-            System.out.println("I was clicked");
+            //System.out.println("I was clicked");
+            
+            if(imgName.equals("CreditsButton.png")){
+                Greenfoot.setWorld(new SplashScreen());
+            }
         }
     }
     
