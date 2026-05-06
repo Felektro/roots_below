@@ -1,6 +1,9 @@
 #Greenfoot project file
+class.DeathScreen.image=space.jpg
 class.Door.image=empty.png
+class.Menu.image=brick.jpg
 class.RootBossAttack.image=empty.png
+class.SplashScreen.image=cell.jpg
 class.Wall.image=empty.png
 dependency1.from=LoadingDungeon
 dependency1.to=MyWorld
