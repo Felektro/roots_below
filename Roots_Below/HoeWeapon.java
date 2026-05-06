@@ -13,6 +13,7 @@ public class HoeWeapon extends Actor
      * Act - do whatever the HoeWeapon wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    public int hoeDir;
     
     public int damage = 10;
     
@@ -29,9 +30,14 @@ public class HoeWeapon extends Actor
     {
         if(isUsed){
             Enemy enemy = (Enemy)getOneIntersectingObject(Enemy.class);
-        
+            
             if(enemy != null && !enemiesHit.contains(enemy)){
                 //System.out.println("hit an enemy");
+                
+                if(!detectSide(enemy)){
+                    return;
+                }
+                
                 enemy.takeDmg(damage);
                 enemiesHit.add(enemy);
             }
@@ -40,6 +46,11 @@ public class HoeWeapon extends Actor
             
             if(boss != null && bossHit == null){
                 //System.out.println("hit an enemy");
+                
+                if(!detectSide(boss)){
+                    return;
+                }
+                
                 boss.takeDmg(damage);
                 bossHit = boss;
             }
@@ -48,6 +59,37 @@ public class HoeWeapon extends Actor
             enemiesHit.clear();
             bossHit = null;
         }
+    }
+    
+    public boolean detectSide(Actor actor){
+        switch (hoeDir){
+                case 1:
+                    if (actor.getX() <= getX()){
+                        //System.out.println("on the left");
+                        return false;
+                    }
+                    break;
+                case 2:
+                    if (actor.getY() <= getY()){
+                        //System.out.println("up");
+                        return false;
+                    }
+                    break;
+                case 3:
+                    if (actor.getX() >= getX()){
+                        //System.out.println("on the right");
+                        return false;
+                    }
+                    break;
+                 case 4:
+                    if (actor.getY() >= getY()){
+                        //System.out.println("down");
+                        return false;
+                    }
+                    break;
+                
+                } 
+        return true;
     }
     
     public void setImg(String img){

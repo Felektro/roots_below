@@ -50,6 +50,13 @@ public class GameManager extends Actor
             return;
         }
         
+        if(rooms.get(currentPos).isGarden){
+            System.out.println("leaving garden");
+            
+            Actor seedPedestal = getWorld().getObjects(SeedPedestal.class).get(0);
+            getWorld().removeObject(seedPedestal);
+        }
+        
         if(!currentPos.equals(new Pos(0, 0))){
             //System.out.println(currentPos.x + " " + currentPos.y);
             //rooms.get(currentPos).removeOldEnemies();
