@@ -22,5 +22,9 @@ public class Menu extends World
         bgImage = new GreenfootImage("Menu_Final.png");
         setBackground(bgImage);
         
+        addObject(new MenuButton("StartButton.png"), 800, 480);
+        addObject(new MenuButton("CreditsButton.png"), 800, 560);
+        addObject(new MenuButton("QuitButton.png"), 800, 640);
+        
     }
 }
