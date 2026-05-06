@@ -14,6 +14,7 @@ public class RootBossAttack extends Actor
      */
     
     GreenfootImage image;
+    Player playerObject;
     
     boolean isActive;
     boolean isDead;
@@ -68,17 +69,21 @@ public class RootBossAttack extends Actor
     public void act()
     {
         scaleImg();
+        if(!isDead){
+            
+            Actor player = getOneIntersectingObject(Player.class);
         
-        Actor player = getOneIntersectingObject(Player.class);
-        
-        if(player != null && isActive){
-            //System.out.println("touching the player");
+            if(player != null && isActive){
+                playerObject.takeDmg(1);
+            }
         }
+        
         
     }
     
     protected void addedToWorld(World world)
     {
+        playerObject = (greenfoot.core.WorldHandler.getInstance()).getWorld().getObjects(Player.class).get(0);
         startAttack = System.currentTimeMillis();
     }
 }

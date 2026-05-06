@@ -15,9 +15,14 @@ public class Menu extends World
      */
     public Menu()
     {    
-        // Create a new world same size as the gaming screen
-        super(1600, 900, 1);
-        //prepare();
+        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
+        super(1600, 900, 1); 
+        bgImage = new GreenfootImage("Menu_Final.png");
+        setBackground(bgImage);
+        
+        addObject(new MenuButton("StartButton.png"), 800, 480);
+        addObject(new MenuButton("CreditsButton.png"), 800, 560);
+        addObject(new MenuButton("QuitButton.png"), 800, 640);
+        
     }
-} 
- 
+}
