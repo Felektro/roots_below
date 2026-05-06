@@ -25,6 +25,10 @@ public class CellarDoor extends Actor
     
     public void act()
     {
-        // Add your action code here.
+        Actor player = getOneIntersectingObject(Player.class);
+        
+        if(player != null){
+            Greenfoot.setWorld(new LoadingDungeon());
+        }
     }
 }
