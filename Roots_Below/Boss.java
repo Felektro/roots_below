@@ -173,11 +173,13 @@ public class Boss extends Actor
                 enemy.remove();
             }
             
+            getWorld().addObject(new CellarDoor(), 800, 550);
             getWorld().removeObject(this);
             
             isDead = true;
             room.isCleared = true;
             room.openDoors();
+        
         }
     }
     
