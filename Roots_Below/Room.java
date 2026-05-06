@@ -25,6 +25,7 @@ public class Room extends Actor
     public Room(int x, int y){
         this.x = x;
         this.y = y;
+        
         if(!(x == 0 && y == 0)){
             enemies = RoomLayout.randomRoomLayout(this);  //REMOVE AFTER TESTING
         }
@@ -54,7 +55,10 @@ public class Room extends Actor
     }
     
     public void loadEnemies(){
-        if(isBoss){
+        if(isGarden){
+            greenfoot.core.WorldHandler.getInstance().getWorld().addObject(new SeedPedestal(), 800, 450);
+        }
+        if(isBoss && enemies != null){
             enemies.clear();
             enemies = null;
             
@@ -89,6 +93,16 @@ public class Room extends Actor
     public void openDoors(){
         checkEnemies();
         loadDoors();
+        
+        spawnItemDrop();
+    }
+    
+    public void spawnItemDrop(){
+        if(!isCleared){
+            return;
+        }
+        
+        greenfoot.core.WorldHandler.getInstance().getWorld().addObject(new ItemDrop(), 800, 450);
     }
     
     public void loadDoors(){
