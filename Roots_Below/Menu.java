@@ -9,8 +9,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Menu extends World
 {
 
-    GreenfootImage bgImage;
-    
     /**
      * Constructor for objects of class Menu.
      * 
