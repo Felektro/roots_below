@@ -23,9 +23,10 @@ public class Enemy extends Actor
     }
     
     public EnemyType type;
-    public int hp = 30;
+    public float hp = 30;
     public int hitboxRadius = 25;
-    public int speed = 3;
+    public int baseSpeed = 3;
+    public int speed = baseSpeed;
     public int angle;
     
     int wallWidth = 15 * 10; // 15 pixels
@@ -35,6 +36,13 @@ public class Enemy extends Actor
     public int x;
     public int y;
 
+    Color color;
+    
+    public boolean rooted;
+    
+    float rootDelay = 1f;
+    double rootStart;    
+    
     public boolean isDead;
     public boolean isBossMinion;
     
@@ -56,11 +64,14 @@ public class Enemy extends Actor
             if(Greenfoot.getRandomNumber(10) < 1){
                 isJumpSlime = true;
                 image.setColor(Color.GREEN);
+                color = Color.GREEN;
             }else{
                 image.setColor(Color.RED);
+                color = Color.RED;
             }
         }else{
             image.setColor(Color.BLUE);
+            color = Color.BLUE;
         }
         image.fillOval(0, 0, 50, 50);
         setImage(image);
@@ -81,6 +92,12 @@ public class Enemy extends Actor
         
     }
     
+    public void changeColor(Color c){
+        image.setColor(c);
+        image.fillOval(0, 0, 50, 50);
+        setImage(image);
+    }
+    
     public void act()
     {
         //System.out.println(playerObject.detectHitbox(this, hitboxRadius));
@@ -91,12 +108,25 @@ public class Enemy extends Actor
             playerObject.takeDmg(1);
         }
         
-        if(type == EnemyType.TURRET){
-            turretShoot();
+        if(!rooted){
+            
+            changeColor(color);
+            
+            if(type == EnemyType.TURRET){
+                turretShoot();
+            }
+            if(type == EnemyType.SLIME){
+                slimeAttack();
+            }
+        }else{
+            changeColor(new Color(160, 82, 45));
+            
+            if((System.currentTimeMillis() - rootStart)/1000.0 > rootDelay){
+                rooted = false;
+            }
         }
-        if(type == EnemyType.SLIME){
-            slimeAttack();
-        }
+        
+        
         
     }
     
@@ -190,10 +220,22 @@ public class Enemy extends Actor
         }
     }
     
-    public void takeDmg(int dmg){
+    public void takeDmg(float dmg, int slow, float root){
         hp -= dmg;
+        
+        if(slow > 3 && slow < 6){
+            speed--;
+        }else if(slow > 5){
+            speed = 1;
+        }
+        
+        if(Greenfoot.getRandomNumber(100) < root*100){
+            rooted = true;
+            rootStart = System.currentTimeMillis();
+        }
         if(hp <= 0){
             remove();
+            MyWorld.enemiesSlain++;
         }
         if(type != EnemyType.TURRET){
             if(angle < 0){

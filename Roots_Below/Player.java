@@ -18,9 +18,13 @@ public class Player extends Actor
     public GameManager gm;
     public Inventory inv;
     
+
+    
     public int playerHealth = 10;
     public int hitboxRadius = 35;
-    public int playerSpeed = 5;
+    public int baseSpeed = 5;
+    public int playerSpeed = baseSpeed;
+    public int baseDmg = 10;
     public HoeWeapon hoeWeapon;
     
     public int knockback = 70;
@@ -62,6 +66,18 @@ public class Player extends Actor
     
     ArrayList<ItemDrop> addedBonuses = new ArrayList<>();
     
+    int thornStack = 0;
+    int sapStack = 0;
+    int bloomStack = 0;
+    int rootStack = 0;
+    int sporeStack = 0;
+    int vineStack = 0;
+    int flameStack = 0;
+    int moonStack = 0;
+    int ironStack = 0;
+    int zapStack = 0;
+    
+    
     
     public Player(HoeWeapon hoe, GameManager gm, Inventory inv){
         hoeWeapon = hoe;
@@ -81,7 +97,7 @@ public class Player extends Actor
         movement();
         roomTransition();
         hoeUse();
-        
+
         //System.out.println(getX() + "  " + getY());
     }
     
@@ -91,6 +107,51 @@ public class Player extends Actor
     
     public void addBonus(ItemDrop drop){
         addedBonuses.add(drop);
+        upgradeCheck(drop);
+    }
+    
+    
+    //{THORN, SAP, BLOOM, ROOT, SPORE, VINE, FLAME, MOON, IRON, ZAP};
+    public void upgradeCheck(ItemDrop upgrade){
+        switch(upgrade.seed){
+            case ItemDrop.seedType.THORN:
+                thornStack++;
+                hoeWeapon.damage += baseDmg * 0.05f *  thornStack;
+                break;
+            case ItemDrop.seedType.SAP:
+                sapStack++;
+                hoeWeapon.slow = sapStack;
+                break;
+            case ItemDrop.seedType.BLOOM:
+                bloomStack++;
+                break;
+            case ItemDrop.seedType.ROOT:
+                rootStack++;
+                hoeWeapon.root = 0.05f *  rootStack;
+                break;
+            case ItemDrop.seedType.SPORE:
+                //System.out.println("Added " + upgrade.seed + " upgrade");
+                break;
+            case ItemDrop.seedType.VINE:
+                vineStack++;
+                
+                playerSpeed = baseSpeed + (int)Math.floor(vineStack/3);
+                
+                break;
+            case ItemDrop.seedType.FLAME:
+                System.out.println("Added " + upgrade.seed + " upgrade");
+                break;
+            case ItemDrop.seedType.MOON:
+                System.out.println("Added " + upgrade.seed + " upgrade");
+                break;
+            case ItemDrop.seedType.IRON:
+                System.out.println("Added " + upgrade.seed + " upgrade");
+                break;
+            case ItemDrop.seedType.ZAP:
+                System.out.println("Added " + upgrade.seed + " upgrade");
+                break;
+            
+        }
     }
     
     public void movement(){
@@ -182,6 +243,13 @@ public class Player extends Actor
         //hoeWeapon.setRotation((hoeDir-1)*90 + coneAngle/2*lastSwing + hoeRot);
     }
     
+    public void bloomAddHeart(){
+        if(Greenfoot.getRandomNumber(100) < bloomStack*5){
+            playerHealth = (playerHealth == 10) ? 10 : playerHealth++;
+            setHearts();
+        }
+    }
+    
     public void roomTransition(){
         Door.DoorType transition = Door.DoorType.UP;
         boolean switchRooms = false;
@@ -256,7 +324,8 @@ public class Player extends Actor
             timeLastDmg = System.currentTimeMillis();
             
             if(playerHealth <= 0){
-                Greenfoot.stop();
+                //Greenfoot.stop();
+                Greenfoot.setWorld(new DeathScreen());
             }
             setHearts();
         }

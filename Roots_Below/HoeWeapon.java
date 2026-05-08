@@ -15,7 +15,9 @@ public class HoeWeapon extends Actor
      */
     public int hoeDir;
     
-    public int damage = 10;
+    public float damage = 10;
+    public int slow;
+    public float root;
     
     public boolean isUsed;
     
@@ -38,7 +40,7 @@ public class HoeWeapon extends Actor
                     return;
                 }
                 
-                enemy.takeDmg(damage);
+                enemy.takeDmg(damage, slow, root);
                 enemiesHit.add(enemy);
             }
             

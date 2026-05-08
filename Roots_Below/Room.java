@@ -50,7 +50,7 @@ public class Room extends Actor
         bg.fillRect(0, 0, world.getWidth(), world.getHeight());
         
         bg.setColor(Color.BLACK);
-        bg.drawString("This is room x: " + x + " y: " + y, world.getWidth()/2, world.getHeight()/2);
+        //bg.drawString("This is room x: " + x + " y: " + y, world.getWidth()/2, world.getHeight()/2);
         world.setBackground(bg);
     }
     
@@ -102,7 +102,13 @@ public class Room extends Actor
             return;
         }
         
-        greenfoot.core.WorldHandler.getInstance().getWorld().addObject(new ItemDrop(), 800, 450);
+        World w = greenfoot.core.WorldHandler.getInstance().getWorld();
+        
+        Player player = w.getObjects(Player.class).get(0);
+        
+        player.bloomAddHeart();
+        
+        w.addObject(new ItemDrop(), 800, 450);
     }
     
     public void loadDoors(){
@@ -126,7 +132,7 @@ public class Room extends Actor
                 door.makeVisible(false);
             }
             
-            nameRoom();
+            //nameRoom();
         }
     }
 }

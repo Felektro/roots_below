@@ -19,8 +19,8 @@ public class RootBossAttack extends Actor
     boolean isActive;
     boolean isDead;
     
-    int startSize = 25;
-    int endSize = 75;
+    int startSize = 100;
+    int endSize = 150;
     
     double currentTime;
     float attackProgress = 0;

@@ -13,11 +13,25 @@ public class MyWorld extends World
      * Constructor for objects of class MyWorld.
      * 
      */
+    
+    public static int floorNumber = 0;
+    public static int enemiesSlain = 0;
+    public static int bossesSlain = 0;
+    public static double timeStartedPlaying = 0;
+    
+    
+    
     public MyWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1600, 900, 1); 
         prepare();
+        
+        GreenfootImage bgImage = new GreenfootImage(1600, 900);
+        bgImage.setColor(Color.DARK_GRAY);
+        bgImage.fillRect(0,0,1600,900);
+        setBackground(bgImage);
+        
     }
     /**
      * Prepare the world for the start of the program.

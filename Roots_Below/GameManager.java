@@ -30,7 +30,7 @@ public class GameManager extends Actor
         
         
         //gridRooms(5);
-        generateRooms(15);
+        generateRooms(MyWorld.floorNumber+10);
         
         currentPos = new Pos(0, 0);
         
@@ -51,7 +51,7 @@ public class GameManager extends Actor
         }
         
         if(rooms.get(currentPos).isGarden){
-            System.out.println("leaving garden");
+            //System.out.println("leaving garden");
             
             Actor seedPedestal = getWorld().getObjects(SeedPedestal.class).get(0);
             getWorld().removeObject(seedPedestal);
@@ -170,7 +170,7 @@ public class GameManager extends Actor
         boolean gardenGenerated = false;
         
         int shopDist = 2;
-        int gardenDist = 3;
+        int gardenDist = 2;
         
         ArrayList<Pos> keys = new ArrayList<>(rooms.keySet());
         
@@ -197,7 +197,7 @@ public class GameManager extends Actor
     }
     
     public void generateBossRoom(){
-        double maxDist = 10; //0
+        double maxDist = 0; //0
         Pos maxDistPos = new Pos(0, 0);
         for (Pos pos : rooms.keySet()){
             if(rooms.get(pos).isShop == true || rooms.get(pos).isGarden == true){
@@ -206,7 +206,7 @@ public class GameManager extends Actor
             if(pos.equals(new Pos(0, 0))) {continue;} // dont need
             double dist = distRooms(0, 0, pos.x, pos.y);
             ////change to >=
-            if(dist  <= maxDist){
+            if(dist  >= maxDist){
                 maxDist = dist;
                 maxDistPos = pos;
             }

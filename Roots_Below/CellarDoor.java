@@ -17,7 +17,7 @@ public class CellarDoor extends Actor
     
     public CellarDoor(){
         image = new GreenfootImage(75, 75);
-        image.setColor(Color.DARK_GRAY);
+        image.setColor(Color.LIGHT_GRAY);
         image.fillRect(0, 0, 75, 75);
         
         setImage(image);

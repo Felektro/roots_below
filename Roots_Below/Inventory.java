@@ -38,6 +38,8 @@ public class Inventory extends Actor
     ArrayList<ItemDrop> epics = new ArrayList();
     ItemDrop legend;
     
+    ArrayList<ItemDrop> testItems = new ArrayList();
+    
     boolean firstTime = true;
     
     boolean pedestalMenuOpen = false;
@@ -100,6 +102,14 @@ public class Inventory extends Actor
         epics.add(new ItemDrop("Iron Seed", "-", ItemDrop.seedType.IRON));
         
         legend = new ItemDrop("Electro Seed", "-", ItemDrop.seedType.ZAP);
+        
+        
+        testItems.add(new ItemDrop("Thorn Seed", "-", ItemDrop.seedType.THORN));
+        testItems.add(new ItemDrop("Sap Seed", "-", ItemDrop.seedType.SAP));
+        testItems.add(new ItemDrop("Bloom Seed", "-", ItemDrop.seedType.BLOOM));
+        testItems.add(new ItemDrop("Root Seed", "-", ItemDrop.seedType.ROOT));
+        testItems.add(new ItemDrop("Vine Seed", "-", ItemDrop.seedType.VINE));
+        
         
         
         //THORN, SAP, BLOOM, ROOT, SPORE, VINE, FLAME, MOON, IRON, ZAP
@@ -195,8 +205,12 @@ public class Inventory extends Actor
     }
     
     public void itemPickup(){
-        rarity itemRar = pickRarity();
         ItemDrop item = null;
+        
+        /*
+        
+        rarity itemRar = pickRarity();
+        
         
         switch(itemRar){
             case rarity.COMMON:
@@ -215,6 +229,9 @@ public class Inventory extends Actor
         
         //System.out.println(item);
         
+        */
+        
+        item = testItems.get(Greenfoot.getRandomNumber(testItems.size()));
         addToInv(item);
     }
     

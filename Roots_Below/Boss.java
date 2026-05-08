@@ -19,8 +19,8 @@ public class Boss extends Actor
     GreenfootImage image;
     
     public String type;
-    int maxHp = 100;
-    int hp;
+    int maxHp = 25 + MyWorld.floorNumber*25;
+    float hp;
     
     public int hitboxRadius = 75;
     
@@ -183,13 +183,14 @@ public class Boss extends Actor
         }
     }
     
-    public void takeDmg(int dmg){
+    public void takeDmg(float dmg){
         hp -= dmg;
         
-        hpBar.hp = hp;
+        hpBar.hp = (int)hp;
         
         if(hp <= 0){
             remove();
+            MyWorld.bossesSlain++;
         }
     }
 }

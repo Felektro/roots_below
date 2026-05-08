@@ -30,7 +30,7 @@ public class ItemDrop extends Actor
         image.fillOval(0, 0, 50, 50);
         setImage(image);
         
-        this.name = "test item";
+        this.name = "item drop";
     }
     
     public ItemDrop(String name, String iconBar, seedType seed){

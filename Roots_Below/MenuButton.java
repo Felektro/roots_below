@@ -51,6 +51,14 @@ public class MenuButton extends Actor
             if(imgName.equals("CreditsButton.png")){
                 Greenfoot.setWorld(new SplashScreen());
             }
+            if(imgName.equals("QuitButton.png")){
+                Greenfoot.stop();
+                //System.out.println("stopped");
+            }
+            if(imgName.equals("StartButton.png")){
+                Greenfoot.setWorld(new LoadingDungeon());
+                MyWorld.timeStartedPlaying = System.currentTimeMillis();
+            }
         }
     }
     
