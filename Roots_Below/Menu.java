@@ -27,5 +27,7 @@ public class Menu extends World
         addObject(new MenuButton("CreditsButton.png"), 800, 560);
         addObject(new MenuButton("QuitButton.png"), 800, 640);
         
+        MyWorld.floorNumber = 0;
+        
     }
 }

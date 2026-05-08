@@ -120,7 +120,7 @@ public class Inventory extends Actor
     {
         if(firstTime){
             for(int i = 0; i < 10; i++){
-                getWorld().addObject(new ItemDrop(), 200 + i * 50, 200);
+                //getWorld().addObject(new ItemDrop(), 200 + i * 50, 200);
             }
             
             firstTime = false;
