@@ -236,6 +236,7 @@ public class Enemy extends Actor
         if(hp <= 0){
             remove();
             MyWorld.enemiesSlain++;
+            Greenfoot.playSound("enemy_sound.mp3");
         }
         if(type != EnemyType.TURRET){
             if(angle < 0){

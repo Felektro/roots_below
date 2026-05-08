@@ -18,8 +18,11 @@ public class MenuButton extends Actor
     GreenfootImage image;
     GreenfootImage hoveredImage;
     
-    public MenuButton(String imgName){
+    GreenfootSound bgMusic;
+    
+    public MenuButton(String imgName, GreenfootSound bgMusic){
         this.imgName = imgName;
+        this.bgMusic = bgMusic;
         
         image = new GreenfootImage(imgName);
         
@@ -30,6 +33,8 @@ public class MenuButton extends Actor
         hoveredImage.scale((int)(hoveredImage.getWidth() * scale), (int)(hoveredImage.getHeight() * scale));
         
         image = new GreenfootImage(imgName);
+        
+        
     }
     
     public void act()
@@ -50,14 +55,17 @@ public class MenuButton extends Actor
             
             if(imgName.equals("CreditsButton.png")){
                 Greenfoot.setWorld(new SplashScreen());
+                bgMusic.stop();
             }
             if(imgName.equals("QuitButton.png")){
                 Greenfoot.stop();
+                bgMusic.stop();
                 //System.out.println("stopped");
             }
             if(imgName.equals("StartButton.png")){
                 Greenfoot.setWorld(new LoadingDungeon());
                 MyWorld.timeStartedPlaying = System.currentTimeMillis();
+                bgMusic.stop();
             }
         }
     }

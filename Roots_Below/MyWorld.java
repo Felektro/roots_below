@@ -19,13 +19,14 @@ public class MyWorld extends World
     public static int bossesSlain = 0;
     public static double timeStartedPlaying = 0;
     
-    
+    private GreenfootSound bgMusic = new GreenfootSound("BackgroundMusic.mp3");
     
     public MyWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1600, 900, 1); 
         prepare();
+        bgMusic.playLoop();
         
         GreenfootImage bgImage = new GreenfootImage(1600, 900);
         bgImage.setColor(Color.DARK_GRAY);
@@ -33,6 +34,13 @@ public class MyWorld extends World
         setBackground(bgImage);
         
     }
+    
+    public void changeMusic(String music){
+        bgMusic.stop();
+        bgMusic = new GreenfootSound(music);
+        bgMusic.playLoop();
+    }
+    
     /**
      * Prepare the world for the start of the program.
      * That is: create the initial objects and add them to the world.

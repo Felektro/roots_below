@@ -15,12 +15,14 @@ public class LoadingDungeon extends World
     
     float screenDelay = 3f;
     double timeScreenStarted;
+
+    private GreenfootSound bgMusic = new GreenfootSound("BackgroundMusic.mp3");
     
     public LoadingDungeon()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1600, 900, 1); 
-        
+        //bgMusic.playLoop();
         timeScreenStarted = System.currentTimeMillis();     
         
         GreenfootImage bgImage = new GreenfootImage(1600, 900);
@@ -37,6 +39,7 @@ public class LoadingDungeon extends World
     public void act(){
         if((System.currentTimeMillis() - timeScreenStarted)/1000.0 > screenDelay){
             Greenfoot.setWorld(new MyWorld());
+            bgMusic.pause();
         }
     }
     

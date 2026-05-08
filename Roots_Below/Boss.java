@@ -56,6 +56,8 @@ public class Boss extends Actor
         
         playerObject = (greenfoot.core.WorldHandler.getInstance()).getWorld().getObjects(Player.class).get(0);
         
+        ((MyWorld)getWorld()).changeMusic("BossFightMusic.mp3");
+        
     }
     
     public void act()
@@ -188,9 +190,14 @@ public class Boss extends Actor
         
         hpBar.hp = (int)hp;
         
+        
+        
         if(hp <= 0){
+            ((MyWorld)getWorld()).changeMusic("BackgroundMusic.mp3");
             remove();
             MyWorld.bossesSlain++;
+            Greenfoot.playSound("enemy_sound.mp3");
+            Greenfoot.playSound("victory_sound.mp3");
         }
     }
 }

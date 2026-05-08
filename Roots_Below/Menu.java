@@ -16,16 +16,19 @@ public class Menu extends World
     
     GreenfootImage bgImage;
     
+    private GreenfootSound bgMusic = new GreenfootSound("MenuMusic.mp3");
+    
     public Menu()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1600, 900, 1); 
+        bgMusic.playLoop();
         bgImage = new GreenfootImage("Menu_Final.png");
         setBackground(bgImage);
         
-        addObject(new MenuButton("StartButton.png"), 800, 480);
-        addObject(new MenuButton("CreditsButton.png"), 800, 560);
-        addObject(new MenuButton("QuitButton.png"), 800, 640);
+        addObject(new MenuButton("StartButton.png", bgMusic), 800, 480);
+        addObject(new MenuButton("CreditsButton.png", bgMusic), 800, 560);
+        addObject(new MenuButton("QuitButton.png", bgMusic), 800, 640);
         
         MyWorld.floorNumber = 0;
         

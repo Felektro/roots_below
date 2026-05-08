@@ -95,6 +95,8 @@ public class GameManager extends Actor
         
         rooms.get(currentPos).loadRoom();
         
+        Greenfoot.playSound("door_sound.mp3");
+        
     }
     
     public double distRooms(int x1, int y1, int x2, int y2){

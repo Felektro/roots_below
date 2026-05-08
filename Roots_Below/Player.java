@@ -218,10 +218,12 @@ public class Player extends Actor
         hoeWeapon.setLocation(getX() + hoeOffsetX, getY() + hoeOffsetY);
         hoeWeapon.setRotation((hoeDir-1)*90 + coneAngle/2*lastSwing + hoeRot);
         
+        
         if (Greenfoot.isKeyDown("space") && !usingHoe && (System.currentTimeMillis() - timeLastSwing)/1000.0 > swingDelay && !usingPedestal) {
             usingHoe = true;
             hoeWeapon.isUsed = true;
             hoeTurn = coneAngle;
+            Greenfoot.playSound("hoe_sound.mp3");
         }
         if(usingHoe){
             //hoeWeapon.turn(turnAngle*-1 * lastSwing);

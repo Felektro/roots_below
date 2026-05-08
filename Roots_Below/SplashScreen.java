@@ -13,10 +13,12 @@ public class SplashScreen extends World
     float screenDelay = 3f;
     double timeScreenStarted;
     
+    private GreenfootSound bgMusic = new GreenfootSound("MenuMusic.mp3");
+    
     public SplashScreen()
     {    
         super(1600, 900, 1);
-        
+        bgMusic.playLoop();
         GreenfootImage bg = new GreenfootImage(1600, 900);
         bg.setColor(Color.BLACK);
         bg.fillRect(0,0, 1600, 900);
@@ -27,7 +29,7 @@ public class SplashScreen extends World
         getBackground().drawImage(logo, (1600 - logo.getWidth())/2, (900 - logo.getHeight())/2);
         showText("Game Programming 1 - 420-141-VA - Winter 2026", 230 , 100);
         showText("Made by: Illia, Yuliia, Richard", 500 ,800);
-        
+        bgMusic.pause();
         timeScreenStarted = System.currentTimeMillis(); 
         
     }
@@ -35,6 +37,7 @@ public class SplashScreen extends World
     public void act(){
         if((System.currentTimeMillis() - timeScreenStarted)/1000.0 > screenDelay){
             Greenfoot.setWorld(new Menu());
+            bgMusic.stop();
         }
     }
     
